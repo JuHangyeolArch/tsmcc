@@ -26,7 +26,7 @@ use crate::compiler::symtable::{
 
 use crate::compiler::cs_analyzer::CsError;
 
-use crate::compiler::ir_generator::SideKind;
+use crate::compiler::cs_analyzer::type_checker::SideKind;
 
 use crate::compiler::cs_analyzer::type_checker::condexpr;
 

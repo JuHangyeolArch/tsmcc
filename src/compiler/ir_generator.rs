@@ -82,7 +82,7 @@ impl IrGenerator {
 }
 
 #[derive(Debug,Clone,Copy,PartialEq)]
-enum SideKind {
+pub enum SideKind {
     LValue,
     RValue,
 }

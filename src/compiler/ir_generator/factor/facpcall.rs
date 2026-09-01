@@ -52,29 +52,29 @@ pub fn ir_facpcall(
     let node = ast.get(id).unwrap();
 
     let lchild = node.get_lchild().unwrap();
-
-
-    let AstNodeKind::Identifier(name) = node.get_kind() else {
+    
+    let AstNodeKind::Identifier(name) = ast.get(lchild).unwrap().get_kind() else {
         return Err(IrGenError::UnexpectedError);
     };
 
-    let name = id::ir_id(ast,nodeid)?;
+    let name = id::ir_id(ast,id)?;
         
     let func_idx = func_table
         .get_index(&name).unwrap();
 
-    let ir_func = iloc
-        .get_mut_bypos(entry)
-        .unwrap();
-
-    let psize = ir_func.get_paramsize();
-    
     let rchild = node.get_rchild().unwrap();
     arglist::ir_arglist(ast,func_table,rchild,entry,iloc,reg_count)?;
 
-    ir_func.update_regmax(reg_count);
-    ir_func.add_line(IlocInstruction::Empty,Some(IlocLabel::Call(func_idx,Register(reg_count))), id);
+    iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .update_regmax(reg_count);
+
+    iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .add_line(IlocInstruction::Empty,Some(IlocLabel::Call(func_idx,Register(reg_count))), id);
 
    
-    Ok((Rvalue,reg_count))
+    Ok((SideKind::RValue,reg_count))
 }

@@ -29,7 +29,7 @@ mod program;
 mod funclist;
 mod function;
 mod funciface;
-mod valuekind;
+pub mod valuekind;
 mod basicval;
 
 mod paramlist;
@@ -48,7 +48,7 @@ mod term;
 mod unaryexpr;
 mod factor;
 
-mod id;
+pub mod id;
 mod stars;
 
 mod arglist;

@@ -35,18 +35,18 @@ use crate::compiler::ir_generator::IrGenError;
 use crate::compiler::ir_generator::statement;
 
 
-pub fn fc_stmtlist(
+pub fn ir_stmtlist(
     ast: &Ast,
-    func_table: &mut FuncTable,
+    func_table: &FuncTable,
     id: NodeID,
     entry: usize,
     iloc: &mut IlocProgram,
-) -> Result<(),CsError> {
+) -> Result<(),IrGenError> {
 
     let node = ast.get(id).unwrap();
 
     let Some(lchild) = node.get_lchild() else {
-        return Ok((cur_flow));
+        return Ok(());
     };
     
     statement::ir_statement(ast,func_table,lchild,entry,iloc)?;            

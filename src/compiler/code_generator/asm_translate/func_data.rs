@@ -1,4 +1,4 @@
-use crate::compiler::code_generator::asm_translate::idiom::labeled_data;
+
 use crate::compiler::iloc::{
     IlocProgram,
     IlocLine,

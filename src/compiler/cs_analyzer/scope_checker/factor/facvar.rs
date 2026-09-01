@@ -32,7 +32,7 @@ use crate::compiler::cs_analyzer::scope_checker::ScopeStack;
 pub fn sc_facvar(
     ast: &Ast,
     id: NodeID,
-    ss: &mut ScopeStack
+    ss: &ScopeStack
 ) -> Result<(),CsError> {
 
     let node = ast.get(id).unwrap();

@@ -46,7 +46,7 @@ pub fn ir_unaryexpr(
     entry: usize,
     iloc: &mut IlocProgram,
     reg_count: usize,    
-) -> Result<(SideKind_usize),CsError> {
+) -> Result<(SideKind,usize),IrGenError> {
 
     let node = ast.get(id).unwrap();
     let lchild = node.get_lchild().unwrap();
@@ -84,7 +84,7 @@ pub fn ir_unaryexpr(
                 None,
                 id
             );
-        return Ok((SideKind::Rvalue,ref_reg));
+        return Ok((SideKind::RValue,ref_reg));
     };
 
     let right_eval_reg: usize = if right_kind == SideKind::LValue {
@@ -95,15 +95,15 @@ pub fn ir_unaryexpr(
  
     match opkind {
         UnaryOpKind::Plus => {            
-            Ok((SideKind::Rvalue,right_eval_reg))            
+            Ok((SideKind::RValue,right_eval_reg))            
         },
 
         UnaryOpKind::Minus => {
             let negative_reg = negative::ir_negative(id,entry,iloc,right_eval_reg);
-            Ok((SideKind::Rvalue, negative_reg))
+            Ok((SideKind::RValue, negative_reg))
         },
         UnaryOpKind::Dereference => {
-            Ok((SideKind::Lvalue,right_eval_reg))            
+            Ok((SideKind::LValue,right_eval_reg))            
         },
         _ => Err(IrGenError::UnexpectedError)
     }

@@ -20,9 +20,6 @@ use crate::compiler::machine_code::{
 };
 
 use crate::compiler::assembler::Assembler;
-use crate::compiler::assembler::AssembleError;
-
-
 
 
 impl Assembler {

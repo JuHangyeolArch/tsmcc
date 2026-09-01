@@ -69,5 +69,5 @@ pub fn ir_faclit(
     
 
     
-    Ok((Rvalue,reg_count))
+    Ok((SideKind::RValue,reg_count))
 }

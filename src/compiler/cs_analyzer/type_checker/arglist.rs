@@ -47,7 +47,7 @@ pub fn tc_arglist(
         if index >= callee.get_params() {
             return Err(CsError::InvalidArguement(lchild));
         }
-        let arg_type = assignexpr::tc_assexpr(ast,func_table,lchild,entry)?;
+        let (arg_type,_) = assignexpr::tc_assexpr(ast,func_table,lchild,entry)?;
 
         if !arg_type.is_equal(callee
             .get_unmut_vars()

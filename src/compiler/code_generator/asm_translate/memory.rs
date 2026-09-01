@@ -85,12 +85,13 @@ impl CodeGenerator {
         target: usize
     ) -> Result<(),CodeGenError> {
 
-        let left_reg = self.resolver.res_register(entry,source1).unwrap();
-        let right_reg = self.resolver.res_register(entry,source2).unwrap();
+        let left_reg = self.resolver.res_register(entry,source).unwrap();
         let result_reg = self.resolver.res_register(entry,target).unwrap();
 
 
-        self.calc_load_tmp1(asm_program,left_reg,line_number);              
+        self.calc_load_tmp1(asm_program,left_reg,line_number);
+
+        self.calc_spo(asm_program, result_reg, line_number);
         self.add_line(
             asm_program,
             idiom::load_ind_spo(),

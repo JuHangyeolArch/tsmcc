@@ -47,16 +47,13 @@ pub fn ir_arglist(
     entry: usize,
     iloc: &mut IlocProgram,
     reg_count: usize,
-) -> Result<(),CsError> {
+    
+) -> Result<(),IrGenError> {
 
     let node = ast.get(id).unwrap();
-
-    let lchild: NodeID;
-
+    
     if let Some(lchild) = node.get_lchild() {
-        if index >= callee.get_params() {
-            return Err(CsError::InvalidArguement(lchild));
-        }
+
         let (arg_kind,arg_reg) = assignexpr::ir_assexpr(ast,func_table,lchild,entry,iloc,reg_count)?;
 
         let arg_eval_reg: usize = if arg_kind == SideKind::LValue {
@@ -68,7 +65,9 @@ pub fn ir_arglist(
 
         ir_arglist(ast,func_table,rchild,entry,iloc,arg_eval_reg + 1)?;
         
-        ir_func.add_line(IlocInstruction::Empty,Some(IlocLabel::ParamIn(Register(arg_eval_reg))), id);
+        iloc.get_mut_bypos(entry)
+            .unwrap()
+            .add_line(IlocInstruction::Empty,Some(IlocLabel::ParamIn(Register(arg_eval_reg))), id);
         
     } else {
         return Ok(());

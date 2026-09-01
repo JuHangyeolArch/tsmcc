@@ -38,10 +38,6 @@ pub fn fc_stmtif(
 
     let node = ast.get(id).unwrap();
     let rchild = node.get_rchild().unwrap();
-    func_table
-        .get_bypos(entry)
-        .unwrap()
-        .get_mut_fg();
 
     let entrance_flow = func_table
         .get_bypos(entry)
@@ -66,11 +62,18 @@ pub fn fc_stmtif(
         .get_mut_fg()
          .alloc();
 
-    fgraph
+    func_table
+        .get_bypos(entry)
+        .unwrap()
+        .get_mut_fg()
         .get_mut(cur_flow)
         .unwrap()
         .set_child(next_flow);    
-    fgraph
+
+    func_table
+        .get_bypos(entry)
+        .unwrap()
+        .get_mut_fg()
         .get_mut(exit_flow)
         .unwrap()
         .set_child(next_flow);

@@ -62,18 +62,23 @@ pub fn ir_stmtif(
         expr_reg
     };
 
-    let ir_func = iloc
+    let block_in = iloc
         .get_mut_bypos(entry)
-        .unwrap();
-
-    let block_in = ir_func.inc_internal_bc;
-    let block_out = ir_func.inc_internal_bc;
+        .unwrap()
+        .inc_internal_bc();
+    let block_out = iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .inc_internal_bc();
 
     
     let zero_reg = expr_eval_reg + 1;
 
 
-    ir_func.add_line(
+    iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .add_line(
         IlocInstruction::LoadI{
             constant: 0,
             target: Register(zero_reg),
@@ -84,9 +89,15 @@ pub fn ir_stmtif(
     
     let control_reg = zero_reg + 1;
 
-    ir_func.update_regmax(control_reg);    
-    
-    ir_func.add_line(
+    iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .update_regmax(control_reg);    
+
+    iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .add_line(
         IlocInstruction::CmpEQ{
             source1: Register(expr_eval_reg),
             source2: Register(zero_reg),
@@ -96,7 +107,10 @@ pub fn ir_stmtif(
         id
     );
 
-    ir_func.add_line(
+    iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .add_line(
         IlocInstruction::Cbr{
             source: Register(control_reg),
             target_l1: GotoLabel(block_out),
@@ -106,13 +120,19 @@ pub fn ir_stmtif(
         id
     );
 
-    ir_func.add_line(IlocInstruction::Empty,Some(IlocLabel::Goto(GotoLabel(block_in))), id);
+    iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .add_line(IlocInstruction::Empty,Some(IlocLabel::Goto(GotoLabel(block_in))), id);
     
     let rchild = node.get_rchild().unwrap();
 
     stmtcomp::ir_stmtcomp(ast,func_table,rchild,entry,iloc)?;
 
-    ir_func.add_line(IlocInstruction::Empty,Some(IlocLabel::Goto(GotoLabel(block_out))), id);
+    iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .add_line(IlocInstruction::Empty,Some(IlocLabel::Goto(GotoLabel(block_out))), id);
     
     Ok(())
 }

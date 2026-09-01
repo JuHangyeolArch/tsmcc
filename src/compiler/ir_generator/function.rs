@@ -57,22 +57,34 @@ pub fn ir_function(
 
     let func_name = cur_func.get_name();
     
-    iloc.push_func(&func_name, entry,cur_func.get_params(),cur_func.get_vars.count() - cur_func.get_params());
+    iloc.push_func(&func_name, entry,cur_func.get_params(),cur_func.get_unmut_vars().count() - cur_func.get_params());
 
-    let ir_func = iloc
+
+    iloc
         .get_mut_bypos(entry)
-        .unwrap();
+        .unwrap()
+        .add_line(IlocInstruction::Empty,Some(IlocLabel::FunctionStart(entry)), id);
+    iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .add_line(IlocInstruction::Empty,Some(IlocLabel::FunctionPrologue), id);
 
-    ir_func.add_line(IlocInstruction::Empty,Some(IlocLabel::FunctionStart(entry)), id);
-    ir_func.add_line(IlocInstruction::Empty,Some(IlocLabel::FunctionPrologue), id);
-
-    let return_bc = ir_func.inc_internal_bc();
+    let return_bc = iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .inc_internal_bc();
     
     let rchild = node.get_rchild().unwrap();   
     stmtcomp::ir_stmtcomp(ast,func_table,rchild, entry,iloc)?;
     
-    ir_func.add_line(IlocInstruction::Empty,Some(IlocLabel::Goto(GotoLabel(return_bc))), id);
-    ir_func.add_line(IlocInstruction::Empty,Some(IlocLabel::FunctionEpilogue), id);
+    iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .add_line(IlocInstruction::Empty,Some(IlocLabel::Goto(GotoLabel(return_bc))), id);
+    iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .add_line(IlocInstruction::Empty,Some(IlocLabel::FunctionEpilogue), id);
     
     Ok(())
 }

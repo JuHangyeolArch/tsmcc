@@ -31,7 +31,7 @@ impl Parser {
         ast: &mut Ast,
     ) -> Result<(), ParseError> {
 
-        let AstNodeKind::Statement(kind)= self.curnode_kind(ast) else {
+        let AstNodeKind::Statement(kind)= self.get_curnode_kind(ast) else {
             return Err(ParseError::UnexpectedError);
         };
 

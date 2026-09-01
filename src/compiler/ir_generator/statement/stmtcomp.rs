@@ -51,7 +51,7 @@ pub fn ir_stmtcomp(
     
     let rchild = node.get_rchild().unwrap();
 
-    stmtlist::ir_stmtlist(ast,func_table,rchild,entry)?;
+    stmtlist::ir_stmtlist(ast,func_table,rchild,entry,iloc)?;
 
     Ok(())
 }

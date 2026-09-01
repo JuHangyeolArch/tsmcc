@@ -57,6 +57,6 @@ pub fn ir_statement(
         AstNodeKind::Statement(StatementKind::Compound) => stmtcomp::ir_stmtcomp(ast,func_table,id,entry,iloc),
         AstNodeKind::Statement(StatementKind::Return) => stmtret::ir_stmtret(ast,func_table,id,entry,iloc),
         AstNodeKind::Statement(StatementKind::Empty) => Ok(()),
-        _ => Err(CsError::UnexpectedError)
+        _ => Err(IrGenError::UnexpectedError)
     }
 }

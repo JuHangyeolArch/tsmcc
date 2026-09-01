@@ -38,6 +38,6 @@ pub fn sc_declarator(
     let rchild = node.get_rchild().unwrap();
     let name = id::sc_id(ast,rchild)?;
 
-    Ok(Variable::new(&name,&valkind,id))  
+    Ok(Variable::new(&name,&valkind,Some(id)))  
 }
 

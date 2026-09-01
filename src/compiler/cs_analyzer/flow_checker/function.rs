@@ -43,17 +43,21 @@ pub fn fc_function(
     
     let rchild = node.get_rchild().unwrap();
 
-    let fgraph = func_table
+
+    let cur_flow = func_table
         .get_bypos(entry)
         .unwrap()
-        .get_mut_fg();
-
-    let cur_flow = fgraph.alloc();
+        .get_mut_fg()
+        .alloc();
 
     
     stmtcomp::fc_stmtcomp(ast,func_table,rchild, entry, cur_flow)?;
 
-    if !fgraph.must_return {
+    if !func_table
+        .get_bypos(entry)
+        .unwrap()
+        .get_mut_fg()
+        .must_return() {
         return Err(CsError::PossiblyNoReturn(entry));
     };
     

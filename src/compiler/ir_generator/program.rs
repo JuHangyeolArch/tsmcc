@@ -65,7 +65,7 @@ pub fn ir_program(
             .unwrap()
             .add_line(
                 IlocInstruction::Empty,
-                Some(IlocLabel::BuiltIn::String),
+                Some(IlocLabel::BuiltIn(name)),
                 NodeID::new(0)
             )
     }

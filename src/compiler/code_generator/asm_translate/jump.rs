@@ -33,7 +33,7 @@ impl CodeGenerator {
 
     pub fn jump(&mut self,
         entry: usize,
-        line_number: usize,
+        line_number: usize,        
         asm_program: &mut AssemblyProgram,
         source: usize,
 
@@ -42,7 +42,7 @@ impl CodeGenerator {
         let reg = self.resolver.res_register(entry,source).unwrap();
 
 
-        self.calc_spo(asm_program,right_reg,line_number);
+        self.calc_spo(asm_program,reg,line_number);
         self.add_line(
             asm_program,
             idiom::bun_ind(idiom::spo()),

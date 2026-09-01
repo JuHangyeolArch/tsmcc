@@ -57,7 +57,7 @@ pub fn tc_unaryexpr(
             Ok((ltype,SideKind::Rvalue))
         },
         UnaryOpKind::Reference => {
-            if lside == Rvalue {
+            if lside == SideKind::Rvalue {
                 return Err(CsError::ReferenceToRValue(id));
             }
             

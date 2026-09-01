@@ -33,7 +33,7 @@ pub fn sc_assexpr(
     func_table: &mut FuncTable,
     id: NodeID,
     entry: usize,
-    ss: &mut ScopeStack
+    ss: &ScopeStack
 ) -> Result<(),CsError> {
 
     let node = ast.get(id).unwrap();

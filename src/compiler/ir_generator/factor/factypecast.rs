@@ -58,5 +58,5 @@ pub fn ir_factypecast(
         fac_reg
     };
     
-    Ok((Rvalue,fac_eval_reg))
+    Ok((SideKind::RValue,fac_eval_reg))
 }

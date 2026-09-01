@@ -50,7 +50,7 @@ pub fn ir_factor(
     entry: usize,
     iloc: &mut IlocProgram,
     reg_count: usize,    
-) -> Result<(SideKind,usize),CsError> {
+) -> Result<(SideKind,usize),IrGenError> {
 
     let node = ast.get(id).unwrap();
 
