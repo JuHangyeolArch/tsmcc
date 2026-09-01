@@ -1,0 +1,39 @@
+use std::fmt;
+use std::error::Error;
+use crate::compiler::ProducedBy;
+
+use crate::compiler::SpanInfo;
+use crate::compiler::CompileError;
+use crate::compiler::ast::{
+    Ast,
+    AstNode,
+    NodeID,
+    AstNodeKind,
+    AdditiveOpKind,
+    MultiplicativeOpKind,
+    StatementKind,
+    FactorKind,
+    BasicValueKind,
+};
+use crate::compiler::symtable::{
+    FuncTable,
+    FunctionInfo,
+    ValueType,
+    VarList,
+    Variable,  
+};
+use crate::compiler::cs_analyzer::CsError;
+
+mod program;
+mod funclist;
+mod function;
+mod stmtlist;
+mod statement;
+
+pub fn flow_checker(
+    ast: &Ast,
+    func_table: &mut FuncTable
+) -> Result<(),CsError> {
+    
+    program::fc_program(ast,func_table,ast.get_root())
+}

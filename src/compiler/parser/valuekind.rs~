@@ -1,0 +1,72 @@
+use crate::compiler::parser::Parser;
+use crate::compiler::parser::ParseError;
+use crate::compiler::ProducedBy;
+use super::SpanInfo;
+use super::CompileError;
+use crate::compiler::token::{Token,TokenList,TokenType};
+use crate::compiler::ast::{
+    Ast,
+    AstNode,
+    NodeID,
+    AstNodeKind,
+    AdditiveOpKind,
+    MultiplicativeOpKind,
+    StatementKind,
+    FactorKind,
+    BasicValueKind,
+};
+
+
+
+impl Parser {
+
+    pub fn handle_valuekind(
+        &mut self,
+        token_list: &TokenList,
+        ast: &mut Ast ) -> Result<(), ParseError> {
+
+
+            self.node_case(
+                ast,
+                token_list,
+                |p, a, l| {
+
+                    let start: usize = p.curnode_start(a);
+                    let end: usize = p.curnode_start(a);
+                    
+                    if l.get(start).unwrap().kind()  !=  TokenType::Int {
+                        return Err(ParseError::InvalidSyntax(start));
+                    }
+                                        
+                    p.push_lchild(
+                        a,
+                        AstNodeKind::BasicValue(BasicValueKind::Int),
+                        start..end
+                    );
+
+                    Ok(())
+                },
+                |p, a, l|{
+
+                    let start: usize = p
+                        .lchild_end(a)
+                        .unwrap();
+                    
+                    let end: usize = p.curnode_end(a);
+                    
+                    p.push_rchild(
+                        a,
+                        AstNodeKind::Stars,
+                        start..end
+                    );
+                
+                    Ok(())
+                },
+                |p, a, l| {
+                    p.set_curnode(p.get_parent(a));
+                    Ok(())
+                },
+            )
+        }
+    
+}

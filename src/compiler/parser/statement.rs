@@ -1,0 +1,50 @@
+use crate::compiler::parser::Parser;
+use crate::compiler::parser::ParseError;
+use crate::compiler::ProducedBy;
+use super::SpanInfo;
+use super::CompileError;
+use crate::compiler::token::{Token,TokenList,TokenType};
+use crate::compiler::ast::{
+    Ast,
+    AstNode,
+    NodeID,
+    AstNodeKind,
+    AdditiveOpKind,
+    MultiplicativeOpKind,
+    StatementKind,
+    FactorKind,
+    BasicValueKind,
+};
+
+
+mod stmtexpr;
+mod stmtif;
+mod stmtcmp;
+mod stmtret;
+mod stmtept;
+
+impl Parser {
+
+    pub fn handle_statement(
+        &mut self,
+        token_list: &TokenList,
+        ast: &mut Ast,
+    ) -> Result<(), ParseError> {
+
+        let AstNodeKind::Statement(kind)= self.curnode_kind(ast) else {
+            return Err(ParseError::UnexpectedError);
+        };
+
+        match kind {
+            StatementKind::Expression => self.handle_stmtexpr(token_list, ast),
+            StatementKind::If => self.handle_stmtif(token_list, ast),            
+            StatementKind::While => self.handle_stmtif(token_list, ast),
+            StatementKind::Compound => self.handle_stmtcmp(token_list, ast),
+            StatementKind::Empty => self.handle_stmtept(token_list, ast),
+            StatementKind::Return => self.handle_stmtret(token_list, ast),
+        }
+
+        
+    }
+    
+}

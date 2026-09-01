@@ -1,0 +1,91 @@
+use std::ops::Range;
+
+
+use crate::compiler::parser::Parser;
+use crate::compiler::parser::ParseError;
+use crate::compiler::ProducedBy;
+use super::SpanInfo;
+use super::CompileError;
+use crate::compiler::token::{Token,TokenList,TokenType};
+use crate::compiler::ast::{
+    Ast,
+    AstNode,
+    NodeID,
+    AstNodeKind,
+    AdditiveOpKind,
+    MultiplicativeOpKind,
+    StatementKind,
+    FactorKind,
+    BasicValueKind,
+};
+
+
+
+impl Parser {
+
+    pub fn find_curdepth<P>(
+        &mut self,
+        token_list: &TokenList,
+        ast: &mut Ast,
+        range: Range<usize>,
+        mut predicate: P
+    ) -> Option<usize>
+where
+P: FnMut(&Token) -> bool,
+    {
+        let start = range.start;
+        let end = range.end;
+        let mut skip_until = start;
+        
+        for i in start..end {
+            
+            if i < skip_until {
+                continue
+            }
+
+            let token = token_list
+                .get(i)
+                .unwrap();
+
+            if predicate(&token) {
+                return Some(i)
+            }
+
+            match token_list
+                .pair_start_from(
+                    i..end,
+                    &mut |t| {t.kind() == TokenType::LParenth },
+                    &mut |t| {t.kind() == TokenType::RParenth }
+                ) {
+                    Some(r) => {skip_until = r.end -1; continue},
+                    None => {},
+                }
+            
+        }
+        
+        None
+    }
+
+    pub fn find_cur_fromsecond<P>(
+        &mut self,
+        token_list: &TokenList,
+        ast: &mut Ast,
+        range: Range<usize>,
+        mut predicate: P
+    ) -> Option<usize>
+where
+P: FnMut(&Token) -> bool,
+    {
+        match self.find_curdepth(token_list,ast,range.clone(),&mut predicate) {
+            Some(i) => {
+                if i == self.curnode_start(ast) {
+                    self.find_curdepth(token_list,ast,i+1..range.end,&mut predicate)
+                } else {
+                    Some(i)
+                }
+            },
+            None => None,
+        }
+    }
+    
+}

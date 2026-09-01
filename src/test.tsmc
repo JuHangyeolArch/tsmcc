@@ -1,0 +1,11 @@
+int main(void){
+    put(10);
+
+    1 = 1 ;
+
+    int **a;
+
+    a = 32;
+
+    return 0;
+}

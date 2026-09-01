@@ -1,0 +1,96 @@
+
+
+* DONE 프로젝트 계획
+
+** DONE 프로젝트 구조 만들기
+
+1) [X] UI와 컴파일러 분리 
+2) [X] 컴파일러 모듈 나누기
+3) [X] 렉서 모듈 나누기  
+4) [X] 파서 모듈 나누기
+5) [X] AST 모듈 나누기
+6) [X] 전체 구조 스케치
+
+
+** DONE 명세 점검
+
+1) [X] 문법 점검
+2) [X] I/O 프렐류드 확인
+
+
+
+* TODO 코드 작성
+
+** DONE 멀티스레드 구조 작성
+
+1) [X] 파일 이름 입력받기
+2) [X] 파일 입력받기
+3) [X] 쓰레드 나누기
+4) [X] 컴파일러 동작, 상태 신호로 주고받기
+
+
+** DONE trimmer
+
+1) [X] 주석 전부삭제 -> 그냥 뒤에서 지우면 된다.
+
+** DONE 렉서 개발
+
+1. [X] next에 대해서 구현
+2. [X] next의 내부
+3. [X] 토큰 종류 enum으로 정의
+4. [X] 토큰에 대한 정의
+5. [X] 문자열 토큰 패턴매칭
+6. [X] 토큰이 str에 대한 참조를 포함하도록 하기
+7. [X] 서브스트링 반환하는 토큰 메서드 구현 -> 모든 결과물이 공유하는 이전 단계에 대한 벡터 참조 구조체와 트레잇을 구현함 
+
+** TODO 파서 개발
+
+1) [X] ast node type specify
+2) [X] struct node tree as vec
+3) [-] let parser match the syntax of the node and bind it to the tree -> match in progres
+   - [X] each child node is degree of progress -> no need to store in parser struct
+   - [-] match every node type in case of (none, none), (left, none), (left, right)->just go to parent
+     -기존 함수 너무 길음 = 다 뜯어 고치기 -> 함수별로 매치하고 내부에서 자식 상태 사용 
+     =>
+     1. [X] Program,
+     2. [X] FunctionList,
+     3. [X] Function
+     4. [X] FunctionInterface,
+     5. [X] ParameterList,
+     6. [X] DeclarationList,
+     7. [X] Declaration,
+     8. [X] Declarator,
+     9. [X] ValueKind,
+     10. [X] StatementList,
+     11. [X] Statement(StatementKind),
+	 * [X] Expression
+	 * [X] If
+	 * [X] While -> If로 같이 처리 동일
+	 * [X] Compound
+	 * [X] Return,
+	 * [X] Empty
+     12. [X] AssginExpr,
+     13. [X] CondtionExpr,
+     14. [X] AdditiveExpr(AdditiveOpKind),
+	 * [X] add
+	 * [X] sub
+     15. [X] Term(MultiplicativeOpKind),
+     16. [X] UnaryExpr(UnaryOpKind),
+     17. [ ] Factor(FactorKind),
+     18. [ ] Identifier(String),
+     19. [ ] Literal(i32),
+
+** TODO 문맥민감분석기 개발
+
+** TODO IR 제네레이터개발
+
+** TODO 코드 제네레이터개발
+
+** TODO 어셈블러 개발
+
+** TODO 하나로 합치기
+
+* TODO 테스트
+
+
+

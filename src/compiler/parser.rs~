@@ -1,0 +1,295 @@
+use std::ops::Range;
+use std::fmt;
+use std::error::Error;
+use crate::compiler::ProducedBy;
+
+use super::SpanInfo;
+use super::CompileError;
+use super::token::{Token,TokenList,TokenType};
+use super::ast::{
+    Ast,
+    AstNode,
+    NodeID,
+    AstNodeKind,
+    AdditiveOpKind,
+    MultiplicativeOpKind,
+    StatementKind,
+    FactorKind,
+    BasicValueKind,
+};
+
+mod matchdelimeter;
+
+
+pub mod program;
+pub mod funclist;
+pub mod function;
+pub mod functioninterface;
+pub mod parameterlist;
+pub mod declarationlist;
+pub mod declaration;
+pub mod declarator;
+pub mod valuekind;
+pub mod stars;
+pub mod statement;
+pub mod statementlist;
+pub mod assignexpr;
+pub mod condexpr;
+pub mod addexpr;
+pub mod term;
+pub mod unaryexpr;
+pub mod factor;
+
+pub mod return_immediate;
+
+
+#[derive(Debug, Clone, PartialEq)]
+struct Parser {
+    cur_nodeid: Option<NodeID>,
+    is_over: bool,
+}
+
+impl Parser {
+    fn new() -> Self {
+        Parser{
+            cur_nodeid: None,
+            is_over: false,
+        }
+    }
+
+    fn set_curnode(&mut self, node_id: Option<NodeID>) {
+        self.cur_nodeid = node_id;
+    }
+
+    fn get_curnode(&self) -> Option<NodeID> {
+        match self.cur_nodeid {
+            Some(id) => Some(id),
+            None => None,
+        }
+    }
+
+    fn get_parent(&self, ast: &Ast) -> Option<NodeID> {
+        ast.get(self.get_curnode()?)?
+            .get_parent()
+    }
+    
+    fn get_lchild(&self, ast: &Ast) -> Option<NodeID> {
+        ast.get(self.get_curnode()?)?
+            .get_lchild()
+    }
+
+    fn get_rchild(&self, ast: &Ast) -> Option<NodeID> {
+        ast.get(self.get_curnode()?)?
+            .get_rchild()
+    }
+    
+    fn get_cur_range(&self, ast: &Ast) -> Option<Range<usize>> {
+        Some(ast.get(self.get_curnode()?)?
+            .produced_by()?
+            .get_range())
+    }
+
+    fn get_lchild_range(&self, ast: &Ast) -> Option<(Range<usize>)> {
+        Some(ast.get(self.get_lchild(ast)?)?
+            .produced_by()?
+            .get_range())
+    }
+
+    fn get_rchild_range(&self, ast: &Ast) -> Option<Range<usize>> {
+        Some(ast.get(self.get_rchild(ast)?)?
+            .produced_by()?
+            .get_range())        
+    }
+
+    
+    pub fn is_over(&self) -> bool {
+        self.is_over
+    }
+    
+    pub fn step(
+        &mut self,
+        token_list: & TokenList,
+        ast: &mut Ast,
+    ) -> Option<Result<(),CompileError>> {
+        if self.is_over() {
+            None
+        } else {
+            match self.progress_node(
+                token_list,
+                ast,
+            ) {
+                Ok(()) => Some(Ok(())),
+                Err(parse_error) => Some(Err(CompileError::ParseError(parse_error))),
+            }
+            
+        }
+
+    }
+   
+
+    fn progress_node(
+        &mut self,
+        token_list: &TokenList,
+        ast: &mut Ast) -> Result<(), ParseError> {
+
+            let node_id  = self.get_curnode().unwrap_or_else(|| {
+                self.init_ast(token_list, ast);
+                self.get_curnode().unwrap()
+            });
+
+            match ast.get(node_id) {
+                Some(node) => match node.get_kind() {
+                    AstNodeKind::Program => self.handle_program(token_list,ast),
+                    AstNodeKind::FunctionList => self.handle_funclist(token_list,ast),
+                    AstNodeKind::Function => self.handle_function(token_list,ast),
+                    AstNodeKind::FunctionInterface => self.handle_fi(token_list,ast),
+                    AstNodeKind::ParameterList => self.handle_paramlist(token_list,ast),
+                    AstNodeKind::DeclarationList => self.handle_declarationlist(token_list,ast),
+                    AstNodeKind::Declaration => self.handle_declaration(token_list,ast),
+                    AstNodeKind::Declarator => self.handle_declarator(token_list,ast),
+                    AstNodeKind::ValueKind => self.handle_valuekind(token_list,ast),
+                    AstNodeKind::BasicValue(_) => self.handle_return_immediate(token_list,ast),
+                    AstNodeKind::Stars => self.handle_stars(token_list,ast),
+                    AstNodeKind::Star => self.handle_return_immediate(token_list,ast),
+                    AstNodeKind::StatementList => self.handle_statementlist(token_list,ast),
+                    AstNodeKind::Statement(_) => self.handle_statement(token_list,ast),
+                    AstNodeKind::AssignExpr => self.handle_assignexpr(token_list,ast),
+                    AstNodeKind::CondtionExpr => self.handle_condexpr(token_list,ast),
+                    AstNodeKind::AdditiveExpr(_) => self.handle_addexpr(token_list,ast),
+                    AstNodeKind::Term(_) => self.handle_term(token_list,ast),
+                    AstNodeKind::UnaryExpr(_) => self.handle_unaryexpr(token_list,ast),
+                    AstNodeKind::Factor(_) => self.handle_factor(token_list,ast),
+                    AstNodeKind::Identifier(_) => self.handle_return_immediate(token_list,ast),
+                    AstNodeKind::Literal(_) => self.handle_return_immediate(token_list,ast),
+                },                
+                None => Err(ParseError::UnexpectedError),
+            }
+            
+        }
+
+
+    fn init_ast(&mut self, token_list: &TokenList,ast: &mut Ast) {
+        self.set_curnode ( Some(
+            ast.alloc(AstNodeKind::Program,
+                None,
+                0,
+                token_list.as_iter().count() - 1)));
+    }
+
+
+    
+    fn curnode_start(&self, ast: &Ast) -> usize {
+        self.get_cur_range(ast)
+            .unwrap()
+            .start
+    }
+
+    fn curnode_end(&self, ast: &Ast) -> usize {
+        self.get_cur_range(ast)
+            .unwrap()
+            .end
+    }
+
+    fn curnode_kind(&self, ast: &Ast) -> AstNodeKind { 
+        ast.get(self.cur_nodeid.unwrap())
+                .unwrap()
+                .get_kind()
+    }
+
+
+
+    
+    fn lchild_start(&self, ast: &Ast) -> Option<usize> {
+        match self.get_lchild_range(ast) {
+            Some(r) => Some(r.start) ,
+            None => None
+        }
+    }
+
+    fn lchild_end(&self, ast: &Ast) -> Option<usize> {
+        match self.get_lchild_range(ast) {
+            Some(r) => Some(r.end) ,
+            None => None
+        }
+    }
+
+    fn lchild_kind(&self, ast: &Ast) -> Option<AstNodeKind> {
+        match self.get_lchild(ast) {
+            Some(node) => Some(ast
+                .get(node)
+                .unwrap()
+                .get_kind()),
+            None => None,
+        }
+    }
+
+    
+    fn node_case<F,G,H>(
+        &mut self,
+        ast: &mut Ast,
+        token_list: &TokenList,
+        mut empty: F,
+        mut left: G,
+        mut right: H)
+    -> Result<(()), ParseError>
+    where
+    F: FnMut(&mut Self, &mut Ast, &TokenList) -> Result<(), ParseError>,
+    G: FnMut(&mut Self, &mut Ast, &TokenList) -> Result<(), ParseError>,
+    H: FnMut(&mut Self, &mut Ast, &TokenList) -> Result<(), ParseError>, {
+
+
+        let node = ast.get(self.get_curnode().unwrap()).unwrap();
+        
+        match (node.get_lchild(), node.get_rchild()){
+            (None, None) => empty(self, ast,token_list) ,
+            (Some(_), None) => left(self, ast,token_list),
+            (Some(_),Some(_)) => right(self, ast,token_list),
+            (None,Some(_)) => right(self, ast,token_list),
+        }
+     
+    }
+
+    fn push_lchild(&mut self, ast: &mut Ast, kind: AstNodeKind, range: Range<usize>) {
+        let lchild = ast.alloc(
+            kind,
+            Some(self.get_curnode().unwrap()),
+            range.start,
+            range.end
+        );
+
+        ast
+            .get_mut(self.get_curnode().unwrap())
+            .unwrap()
+            .set_lchild(lchild);
+                                    
+        self.set_curnode(Some(lchild));
+    }
+
+    fn push_rchild(&mut self, ast: &mut Ast, kind: AstNodeKind, range: Range<usize>) {
+        let rchild = ast.alloc(
+            kind,
+            Some(self.get_curnode().unwrap()),
+            range.start,
+            range.end
+        );
+
+        ast
+            .get_mut(self.get_curnode().unwrap())
+            .unwrap()
+            .set_rchild(rchild);
+                                    
+        self.set_curnode(Some(rchild));
+    }
+
+
+    
+    
+}
+
+    
+#[derive(Debug,Clone,PartialEq)]
+pub enum ParseError {
+    InvalidSyntax(usize),
+    UnexpectedError,
+
+}

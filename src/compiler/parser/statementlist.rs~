@@ -1,0 +1,199 @@
+use std::ops::Range;
+use std::any::Any;
+
+use crate::compiler::parser::Parser;
+use crate::compiler::parser::ParseError;
+use crate::compiler::ProducedBy;
+use super::SpanInfo;
+use super::CompileError;
+use crate::compiler::token::{Token,TokenList,TokenType};
+use crate::compiler::ast::{
+    Ast,
+    AstNode,
+    NodeID,
+    AstNodeKind,
+    AdditiveOpKind,
+    MultiplicativeOpKind,
+    StatementKind,
+    FactorKind,
+    BasicValueKind,
+};
+
+
+
+impl Parser {
+
+pub fn handle_statementlist(
+    &mut self,
+    token_list: &TokenList,
+    ast: &mut Ast ) -> Result<(), ParseError> {
+
+        self.node_case(
+            ast,
+            token_list,
+            |p, a, l| {
+
+                let start: usize = p.curnode_start(a);
+                let end: usize;
+                
+                if start >= p.curnode_end(a) {
+                    p.set_curnode(p.get_parent(a));
+                    return Ok(());                    
+                }
+
+                let kind = p.case_statement(l,a)?;
+
+                end = p.match_statement(l,a,kind.clone())?.end;
+
+                p.push_lchild(
+                    a,
+                    AstNodeKind::Statement(kind),
+                    start..end
+                );
+            
+                Ok(())
+            },
+            |p, a, l| {
+                let start: usize = p
+                    .lchild_end(a)
+                    .unwrap();
+
+                let end: usize = p.curnode_end(a);
+                
+                p.push_rchild(
+                    a,
+                    AstNodeKind::StatementList,
+                    start..end
+                );
+
+                Ok(())
+            },
+            |p, a, l| {
+                p.set_curnode(p.get_parent(a));
+                Ok(())
+            },
+        )
+    }
+
+    pub fn case_statement(
+        &mut self,
+        token_list: &TokenList,
+        ast: &mut Ast ) -> Result<StatementKind, ParseError> {
+            let start = self.curnode_start(ast);
+
+            match token_list
+                .get(start)
+                .unwrap()
+                .kind() {
+                    TokenType::Id(_) | TokenType::Number(_) | TokenType::LParenth|
+                    TokenType::Amper | TokenType::Star  => Ok(StatementKind::Expression),
+                    TokenType::If => Ok(StatementKind::If),
+                    TokenType::While => Ok(StatementKind::While),
+                    TokenType::LBrace => Ok(StatementKind::Compound),
+                    TokenType::Return => Ok(StatementKind::Return),
+                    TokenType::Semic => Ok(StatementKind::Empty),
+                    _ => Err(ParseError::InvalidSyntax(start))
+                }
+        }
+
+    pub fn match_statement(
+        &mut self,
+        token_list: &TokenList,
+        ast: &mut Ast,
+        kind: StatementKind
+    ) -> Result<Range<usize>, ParseError> {
+        
+        match kind {
+            StatementKind::Expression => self.match_stmtexpr(token_list,ast),
+            StatementKind::If => self.match_stmtif(token_list,ast),
+            StatementKind::While => self.match_stmtif(token_list,ast),
+            StatementKind::Compound => self.match_stmtcmp(token_list,ast),
+            StatementKind::Return => self.match_stmtexpr(token_list,ast),
+            StatementKind::Empty => self.match_stmtept(token_list,ast),
+        }       
+    }
+
+
+    pub fn match_stmtexpr(
+        &mut self,
+        token_list: &TokenList,
+        ast: &mut Ast,
+    ) -> Result<Range<usize>, ParseError> {
+        let start: usize = self.curnode_start(ast);
+        let end: usize;
+        
+        match token_list.position_in(self
+            .get_cur_range(ast)
+            .unwrap(),
+            |t: &Token| { t.kind() == TokenType::Semic}
+        ) {
+            Some(i) => {end = i},
+            None => {return Err(ParseError::InvalidSyntax(start));}
+
+        }
+        
+        Ok(start..end)
+
+    }
+
+    pub fn match_stmtif(
+        &mut self,
+        token_list: &TokenList,
+        ast: &mut Ast,
+    ) -> Result<Range<usize>, ParseError> {
+        let start: usize = self.curnode_start(ast);
+        let end: usize;
+        
+        match token_list.match_pair_in(
+            self.get_cur_range(ast).unwrap(),
+            &mut |t| {t.kind() == TokenType::LBrace},
+            &mut |t| {t.kind() == TokenType::RBrace}
+        ) {
+            Some(r) => {end = r.end},
+            None => {return Err(ParseError::InvalidSyntax(start));},
+        };
+
+        Ok(start..end)        
+
+    }
+
+    pub fn match_stmtcmp(
+        &mut self,
+        token_list: &TokenList,
+        ast: &mut Ast,
+    ) -> Result<Range<usize>, ParseError> {
+        
+        let start: usize = self.curnode_start(ast);
+        let end: usize;
+        
+        match token_list.pair_start_from(
+            self.get_cur_range(ast).unwrap(),
+            &mut |t| {t.kind() == TokenType::LBrace},
+            &mut |t| {t.kind() == TokenType::RBrace}
+        ) {
+            Some(r) => {end = r.end},
+            None => {return Err(ParseError::InvalidSyntax(start));},
+        };
+
+        Ok(start + 1..end - 1)
+
+
+        
+
+    }
+
+    pub fn match_stmtept(
+        &mut self,
+        token_list: &TokenList,
+        ast: &mut Ast,
+    ) -> Result<Range<usize>, ParseError> {
+        let start = self.curnode_start(ast);
+        let end = self.curnode_start(ast);        
+
+        Ok(start..end)
+
+    }
+
+    
+}
+
