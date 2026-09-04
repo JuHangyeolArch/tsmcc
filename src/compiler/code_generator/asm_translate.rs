@@ -39,7 +39,7 @@ mod jump;
 impl CodeGenerator {
 
     pub fn asm_translate(&mut self, ir_program: &IlocProgram, asm_program: &mut AssemblyProgram) -> Result<(),CodeGenError> {
-
+        
         self.match_ir_line(
             self.cur_ir_func,
             ir_program
@@ -52,14 +52,16 @@ impl CodeGenerator {
         )?;
         
         let Some(next) = self.next_line(ir_program) else {
+            self.func_data(self.cur_ir_func,self.cur_ir_line,asm_program)?;
             asm_program.add_line(None, AssemblyInstruction::END, None);
             self.is_over = true;
             return Ok(());
         };
 
-        if self.cur_ir_func < next.0 {
-            self.func_data(self.cur_ir_func,self.cur_ir_line,asm_program);
+        println!("{:#?}", next);
 
+        if self.cur_ir_func < next.0 {
+            self.func_data(self.cur_ir_func,self.cur_ir_line,asm_program)?;
         }
         
         (self.cur_ir_func,self.cur_ir_line) = next;
@@ -71,7 +73,7 @@ impl CodeGenerator {
     fn next_line(&self, ir_program: &IlocProgram) -> Option<(usize,usize)> {
         let cur_global_line = ir_program
             .get_global_pos(self.cur_ir_func,self.cur_ir_line)?;
-
+        
         ir_program
             .find_by_global_pos(cur_global_line + 1)
     }
@@ -91,6 +93,8 @@ impl CodeGenerator {
 
     fn match_ir_line(&mut self, entry: usize, ir_line: &IlocLine, line_number: usize, asm_program: &mut AssemblyProgram) -> Result<(),CodeGenError> {
 
+        println!("{:#?}",ir_line);
+        
         match ir_line.get_instruction() {
             IlocInstruction::Empty => { self.match_ir_label(entry,&ir_line.get_label().unwrap(),line_number,asm_program)},
             IlocInstruction::Add{source1: Register(r1), source2: Register(r2), target: Register(rt)} => {self.adder(entry,line_number,asm_program,r1,r2,rt)},

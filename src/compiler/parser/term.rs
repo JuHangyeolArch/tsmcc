@@ -56,7 +56,7 @@ pub fn handle_term(
                     TokenType::Star => {opkind = MultiplicativeOpKind::Multiply;},
                     TokenType::Slash => {opkind = MultiplicativeOpKind::Divide;},
                     _ => {
-                        p.set_cur_end(a,p.get_rchild_end(a).unwrap());
+                        p.set_cur_end(a,p.get_lchild_end(a).unwrap());
                         p.set_curnode(p.get_parent(a));
                         return Ok(());
                     }

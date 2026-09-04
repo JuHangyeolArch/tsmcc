@@ -43,11 +43,11 @@ pub fn ir_id(
 
     let node = ast.get(id).unwrap();
 
-    let AstNodeKind::Identifier(id) = node.get_kind() else {
-        return Err(IrGenError::UnexpectedError);
+    let AstNodeKind::Identifier(name) = node.get_kind() else {
+        return Err(IrGenError::UnexpectedError(id));
     };
 
-    Ok(id)
+    Ok(name)
 
 }
 

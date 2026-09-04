@@ -33,7 +33,6 @@ pub fn handle_paramlist(
 
                 let start: usize = p.get_cur_start(a);
                
-
                 if matches!(l.get(start).unwrap().kind(), TokenType::RParenth) {
                     p.set_cur_end(a,start);
                     p.set_curnode(p.get_parent(a));
@@ -44,7 +43,6 @@ pub fn handle_paramlist(
                         start,
                         None,
                     );
-                    p.set_curnode(p.get_lchild(a));
                 }
                 
                 Ok(())

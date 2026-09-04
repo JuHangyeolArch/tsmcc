@@ -44,7 +44,7 @@ pub fn handle_funclist(
                         start,
                         None,
                     );
-                    p.set_curnode(p.get_lchild(a));
+
                 }
                 Ok(())
             },

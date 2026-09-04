@@ -40,6 +40,12 @@ pub fn tc_stmtret(
 
     let (ltype,_) = assignexpr::tc_assexpr(ast, func_table,lchild,entry)?;
 
+
+    println!("{:#?}", func_table
+        .get_unmut_bypos(entry)
+        .unwrap()
+        .get_type());
+    
     if !func_table
         .get_unmut_bypos(entry)
         .unwrap()

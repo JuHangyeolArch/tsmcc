@@ -1,11 +1,12 @@
-int main(void){
+int main(){
+
+    int **ab;
+	
     put(10);
 
-    1 = 1 ;
+    ab;
 
-    int **a;
-
-    a = 32;
+    ab = (int**) 1 ;
 
     return 0;
 }

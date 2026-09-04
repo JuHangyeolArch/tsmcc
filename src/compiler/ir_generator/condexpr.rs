@@ -50,6 +50,7 @@ pub fn ir_condexpr(
     let node = ast.get(id).unwrap();
     let lchild = node.get_lchild().unwrap();
 
+
     let (left_kind, left_reg) = addexpr::ir_addexpr(ast,func_table,lchild,entry,iloc,reg_count)?;
     
     let Some(rchild) = node.get_rchild() else {

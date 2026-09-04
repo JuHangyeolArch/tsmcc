@@ -55,9 +55,10 @@ pub fn ir_unaryexpr(
         .get(id)
         .unwrap()
         .get_kind() else {
-            return Err(IrGenError::UnexpectedError);
+            return Err(IrGenError::UnexpectedError(id));
         };
 
+    
     if opkind == UnaryOpKind::Nil {
         let (fac_kind, fac_reg) = factor::ir_factor(ast, func_table, lchild, entry,iloc,reg_count)?;
         return Ok((fac_kind,fac_reg));
@@ -105,7 +106,7 @@ pub fn ir_unaryexpr(
         UnaryOpKind::Dereference => {
             Ok((SideKind::LValue,right_eval_reg))            
         },
-        _ => Err(IrGenError::UnexpectedError)
+        _ => Err(IrGenError::UnexpectedError(id))
     }
 
             

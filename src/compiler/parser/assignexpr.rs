@@ -27,16 +27,15 @@ pub fn handle_assignexpr(
     ast: &mut Ast ) -> Result<(), ParseError> {
 
 
+        
         self.node_case(
             ast,
             token_list,
             |p, a, l| {
 
                 let start: usize = p.get_cur_start(a);
-                let end: usize;
                 
-
-                p.push_rchild(
+                p.push_lchild(
                     a,
                     AstNodeKind::CondtionExpr,
                     start,
@@ -46,13 +45,13 @@ pub fn handle_assignexpr(
                 Ok(())
             },
             |p, a, l|{
-
+                
                 let start: usize = p
                     .get_lchild_end(a)
                     .unwrap();
 
                 if ! matches!(l.get(start).unwrap().kind(), TokenType::Assign) {
-                    p.set_cur_end(a,p.get_rchild_end(a).unwrap());
+                    p.set_cur_end(a,p.get_lchild_end(a).unwrap());
                     p.set_curnode(p.get_parent(a));
                     return Ok(());
                 }
@@ -67,6 +66,7 @@ pub fn handle_assignexpr(
                 Ok(())
             },
             |p, a, l| {
+
                 p.set_cur_end(a,p.get_rchild_end(a).unwrap());
                 p.set_curnode(p.get_parent(a));
                 Ok(())

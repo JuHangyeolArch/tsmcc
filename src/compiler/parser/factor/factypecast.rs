@@ -55,7 +55,7 @@ impl Parser {
                         return Err(ParseError::InvalidSyntax(end));
                     }                
 
-                    p.push_lchild(
+                    p.push_rchild(
                         a,
                         AstNodeKind::Factor(FactorKind::Nil),
                         end + 1,

@@ -33,7 +33,8 @@ use crate::compiler::code_generator::{
 
 impl CodeGenerator {
 
-    pub fn func_data(&mut self,
+    pub fn func_data(
+        &mut self,
         entry: usize,
         line_number: usize,
         asm_program: &mut AssemblyProgram
@@ -59,9 +60,12 @@ impl CodeGenerator {
 
         let regs = self.resolver
             .get_reg_list(entry);
+        
         for reg in regs.iter() {
             self.temp_label = Some(reg.1.0);
             self.add_line(asm_program,idiom::data(reg.1.1),line_number);
+            println!("{:#?}",asm_program.last_line());
+
         }
         
         let vars = self.resolver

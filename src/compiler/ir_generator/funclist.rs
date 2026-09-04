@@ -50,7 +50,8 @@ pub fn ir_funclist(
     };
     
     function::ir_function(ast,func_table,lchild,cur_func,iloc)?;
-
+    
+    
     let rchild = node.get_rchild().unwrap();
 
     ir_funclist(ast,func_table,rchild,cur_func+1,iloc)

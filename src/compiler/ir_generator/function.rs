@@ -59,7 +59,6 @@ pub fn ir_function(
     
     iloc.push_func(&func_name, entry,cur_func.get_params(),cur_func.get_unmut_vars().count() - cur_func.get_params());
 
-
     iloc
         .get_mut_bypos(entry)
         .unwrap()

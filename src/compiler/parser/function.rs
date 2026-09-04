@@ -25,7 +25,8 @@ pub fn handle_function(
     token_list: &TokenList,
     ast: &mut Ast ) -> Result<(), ParseError> {
 
-
+        println!("check {:#?}",self.cur_nodeid);
+        
         self.node_case(
             ast,
             token_list,
@@ -39,7 +40,6 @@ pub fn handle_function(
                     start,
                     None
                 );
-                
                 Ok(())
             },
             |p, a, l|{

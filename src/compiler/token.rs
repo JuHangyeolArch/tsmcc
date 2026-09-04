@@ -22,6 +22,10 @@ impl TokenList {
     pub fn push(&mut self,token: Token) {
         self.tokens.push(token);
     }
+
+    pub fn len(&self) -> usize {
+        self.tokens.len()
+    }
     
     pub fn as_iter(&self) -> TokenIteration<'_> {
         TokenIteration::new( self)

@@ -57,7 +57,7 @@ pub fn handle_addexpr(
                     TokenType::Plus => {opkind = AdditiveOpKind::Add;}
                     TokenType::Minus => {opkind = AdditiveOpKind::Substract;}
                     _ => {
-                        p.set_cur_end(a,p.get_rchild_end(a).unwrap());
+                        p.set_cur_end(a,p.get_lchild_end(a).unwrap());
                         p.set_curnode(p.get_parent(a));
                         return Ok(());
                     }

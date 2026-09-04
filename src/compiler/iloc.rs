@@ -30,32 +30,32 @@ impl IlocProgram {
     pub fn get_global_pos(&self, func: usize, line: usize) -> Option<usize> {
         let mut result: usize = 0;
         
-        for i in 0 as usize..func {
+        for i in 0..func {
             result = result + self.functions.get(i)?.len();
         }
+        
         result = result + line;
-
+        
         Some(result)
     }
 
     pub fn find_by_global_pos(&self, pos: usize) -> Option<(usize,usize)> {
-        let mut result = pos;
-
-        let mut entry = 0;
+        let mut result = pos as i32;
         
-        for i in 0 as usize..self.functions.len() {
-            entry = i;
-            let func_line = self.functions.get(i)?.len();
-
-            result = result - func_line;
-
-            if result < 0 {
-                result = result + func_line;
-                break;
+        println!("lne:{}",self.functions.len());
+        
+        for i in 0..self.functions.len() as i32 {
+            let func_line = self.functions.get(i as usize)?.len();
+            println!("e:{i} l:{func_line} r:{result}");
+            
+            if (result - func_line as i32) < 0 {
+                return Some((i as usize,result as usize));
+            } else {
+                result = result - func_line as i32;
             }
         }
 
-        Some((entry,result))
+        None
     }
     
     pub fn get_mut_bypos(&mut self, pos: usize) -> Option<&mut IlocFunction> {
@@ -142,8 +142,8 @@ impl IlocFunction {
     
     
     pub fn update_regmax(&mut self, comparison: usize) {
-        if comparison > self.get_regmax() {
-            self.reg_max = comparison
+        if comparison + 1 > self.get_regmax() {
+            self.reg_max = comparison + 1
         } 
     }
     

@@ -47,15 +47,16 @@ pub fn ir_addexpr(
 
     let node = ast.get(id).unwrap();
     let lchild = node.get_lchild().unwrap();
-
+    
     let (left_kind, left_reg) = term::ir_term(ast,func_table,lchild,entry,iloc,reg_count)?;
     
     let Some(rchild) = node.get_rchild() else {
         return Ok((left_kind,left_reg));
     };
 
+    
     let AstNodeKind::AdditiveExpr(opkind) = node.get_kind() else {
-        return Err(IrGenError::UnexpectedError);
+        return Err(IrGenError::UnexpectedError(id));
     };
 
     
@@ -108,7 +109,7 @@ pub fn ir_addexpr(
                 id
             );
         },
-        _ => {return Err(IrGenError::UnexpectedError);}
+        _ => {return Err(IrGenError::UnexpectedError(id));}
     }
     
     Ok((SideKind::RValue,result_reg))

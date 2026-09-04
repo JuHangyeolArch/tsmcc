@@ -44,9 +44,10 @@ pub fn ir_program(
 
     let node = ast.get(id).unwrap();
     let lchild = node.get_lchild().unwrap();
-
+    let mut cur = 0;
+    
     for i in 0..func_table.count_built_in() {
-
+        cur= i + 1;
         let built_in = func_table
             .get_unmut_bypos(i)
             .unwrap();
@@ -70,7 +71,8 @@ pub fn ir_program(
             )
     }
 
+    funclist::ir_funclist(ast,func_table,lchild,cur,iloc)?;
     
-    funclist::ir_funclist(ast,func_table,lchild,func_table.count_built_in(),iloc)
+    Ok(())
     
 }

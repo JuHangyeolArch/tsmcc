@@ -40,7 +40,7 @@ pub fn sc_valuekind(
 
     let rchild = node.get_rchild().unwrap();
 
-    let depth = stars::sc_stars(ast,id)?;
-
+    let depth = stars::sc_stars(ast,rchild)?;
+    
     Ok(ValueType::new(base_kind, depth))
 }

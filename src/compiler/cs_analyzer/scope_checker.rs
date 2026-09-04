@@ -88,6 +88,8 @@ impl ScopeStack  {
     }
 
     pub fn push(&mut self, name: String) {
+        
+        println!("p {}",name);
         self.stack.push(ScopeBlock::var(&name))
     }
     
@@ -96,12 +98,21 @@ impl ScopeStack  {
     }
 
     pub fn exist(&self, name: String) -> bool {
+
+        println!("{}",name);
         self.stack
             .iter()
-            .any(|block| {matches!(block,ScopeBlock::Var(name))})    
+            .any(|block| {
+                let ScopeBlock::Var(s) = block else {
+                    return false;
+                };
+                *s == name
+            }
+            )
     }
-}
 
+
+}
 pub fn scope_checker(
     ast: &Ast,
     func_table: &mut FuncTable
@@ -115,5 +126,4 @@ pub fn scope_checker(
     )
     
 }
-
 

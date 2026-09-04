@@ -55,7 +55,6 @@ impl CodeGenerator {
         val: u16,
         target: usize
     ) -> Result<(),CodeGenError> {
-
         
         let cons = self.resolver.res_constant(entry,val).unwrap();
 

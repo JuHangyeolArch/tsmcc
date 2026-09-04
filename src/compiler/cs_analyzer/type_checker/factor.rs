@@ -42,6 +42,8 @@ pub fn tc_factor(
 
     let node = ast.get(id).unwrap();
 
+    println!("{:#?}",node.get_kind());
+
     match node.get_kind() {
         AstNodeKind::Factor(FactorKind::Variable) => facvar::tc_facvar(ast, func_table,id,entry),
         AstNodeKind::Factor(FactorKind::Literal) => Ok((ValueType::new(BasicValueKind::Int,0), SideKind::Rvalue)),
@@ -51,6 +53,5 @@ pub fn tc_factor(
         _ => Err(CsError::UnexpectedError)
     }
 
-    
 
 }

@@ -42,7 +42,7 @@ pub fn handle_program(
             },
             |p, a, l| {
 
-                p.set_cur_end(a,p.get_rchild_end(a).unwrap());
+                p.set_cur_end(a,p.get_lchild_end(a).unwrap());
                 p.set_curnode(p.get_parent(a));
               
                 p.is_over = true;

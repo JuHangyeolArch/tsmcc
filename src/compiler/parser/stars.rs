@@ -33,11 +33,11 @@ pub fn handle_stars(
             |p, a, l| {
 
                 let start: usize = p.get_cur_start(a);
-                let end: usize = start;
 
                 if ! matches!(l.get(start).unwrap().kind(), TokenType::Star) {
-                    p.set_cur_end(a,p.get_rchild_end(a).unwrap());
+                    p.set_cur_end(a,start);
                     p.set_curnode(p.get_parent(a));
+                    return  Ok(());
                 }
 
                 p.push_lchild(

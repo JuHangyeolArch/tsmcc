@@ -42,7 +42,6 @@ impl Parser {
                             start,
                             None,
                         );
-                        p.set_curnode(p.get_lchild(a));
                     }
 
             
@@ -53,7 +52,13 @@ impl Parser {
                         .get_lchild_end(a)
                         .unwrap();
 
-
+                    p.push_rchild(
+                        a,
+                        AstNodeKind::DeclarationList,
+                        start,
+                        None
+                    );
+                   
                     Ok(())
                 },
                 |p, a, l| {

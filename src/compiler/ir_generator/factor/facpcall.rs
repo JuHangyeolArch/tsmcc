@@ -53,15 +53,13 @@ pub fn ir_facpcall(
 
     let lchild = node.get_lchild().unwrap();
     
-    let AstNodeKind::Identifier(name) = ast.get(lchild).unwrap().get_kind() else {
-        return Err(IrGenError::UnexpectedError);
-    };
-
-    let name = id::ir_id(ast,id)?;
+    let name = id::ir_id(ast,lchild)?;
         
     let func_idx = func_table
         .get_index(&name).unwrap();
 
+
+    
     let rchild = node.get_rchild().unwrap();
     arglist::ir_arglist(ast,func_table,rchild,entry,iloc,reg_count)?;
 
@@ -75,6 +73,8 @@ pub fn ir_facpcall(
         .unwrap()
         .add_line(IlocInstruction::Empty,Some(IlocLabel::Call(func_idx,Register(reg_count))), id);
 
-   
+
+    println!("{:#?}",iloc);
+    
     Ok((SideKind::RValue,reg_count))
 }

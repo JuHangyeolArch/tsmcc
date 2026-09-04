@@ -52,7 +52,7 @@ impl Parser {
                         return Err(ParseError::InvalidSyntax(start));
                     }                
                     
-                    p.set_cur_end(a,p.get_rchild_end(a).unwrap());
+                    p.set_cur_end(a,p.get_lchild_end(a).unwrap() + 1);
                     p.set_curnode(p.get_parent(a));
                     Ok(())
                 },

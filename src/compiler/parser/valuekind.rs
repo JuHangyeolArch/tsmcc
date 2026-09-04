@@ -50,7 +50,7 @@ impl Parser {
 
                     let start: usize = p
                         .get_lchild_end(a)
-                        .unwrap();                    
+                        .unwrap();
                     
                     p.push_rchild(
                         a,

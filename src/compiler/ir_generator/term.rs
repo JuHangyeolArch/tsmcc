@@ -48,15 +48,15 @@ pub fn ir_term(
 
     let node = ast.get(id).unwrap();
     let lchild = node.get_lchild().unwrap();
-
+    
     let (left_kind, left_reg) =   unaryexpr::ir_unaryexpr(ast,func_table,lchild,entry,iloc,reg_count)?;
     
     let Some(rchild) = node.get_rchild() else {
         return Ok((left_kind, left_reg));
     };
-
+    
     let AstNodeKind::Term(opkind) = node.get_kind() else {
-        return Err(IrGenError::UnexpectedError);
+        return Err(IrGenError::UnexpectedError(id));
     };
     
     let left_eval_reg: usize = if left_kind == SideKind::LValue {
@@ -109,7 +109,7 @@ pub fn ir_term(
                 id
             );
         },
-        _ => {return Err(IrGenError::UnexpectedError);}
+        _ => {return Err(IrGenError::UnexpectedError(id));}
     }
 
     

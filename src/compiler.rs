@@ -68,12 +68,15 @@ pub enum SnapShotPhase {
 
 #[derive(Debug,Clone,PartialEq)]
 pub struct CompileSnapShot {
-    phase: SnapShotPhase,
-    error: Option<CompileError>,
-    text:  String,
-    token_list: TokenList,
-    
-
+    pub phase: SnapShotPhase,
+    pub error: Option<CompileError>,
+    pub text:  String,
+    pub token_list: TokenList,
+    pub ast: Ast,
+    pub func_table: FuncTable,
+    pub iloc: IlocProgram,
+    pub assembly: AssemblyProgram,
+    pub machine_code: MachineProgram,
 }
 
 impl CompileSnapShot {
@@ -96,6 +99,11 @@ impl CompileSnapShot {
             },
             text: cmp.text.clone(),
             token_list: cmp.token_list.clone(),
+            ast: cmp.ast.clone(),
+            func_table: cmp.func_table.clone(),
+            iloc: cmp.iloc.clone(),
+            assembly: cmp.assembly.clone(),
+            machine_code: cmp.machine_code.clone(),
         }
     }
 
@@ -160,7 +168,6 @@ impl Compiler{
     fn new(text: &str) -> Self {
         Compiler {
             
-
             phase: Phase::Lexer(lexer::LexicalAnalyzer::new()),
             text: Compiler::trimmer(text),
             token_list: TokenList::new(),

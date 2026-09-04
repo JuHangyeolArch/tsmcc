@@ -69,8 +69,8 @@ impl IrGenerator {
         if !self.is_over {
             if let Err(e) = program::ir_program(ast, func_table, ast.get_root(),iloc) {
                 return Some(Err(CompileError::IRGenError(e)));
-                self.is_over = true;
             } else {
+                self.is_over = true;
                 return Some(Ok(()));
 
             };
@@ -90,5 +90,5 @@ pub enum SideKind {
 
 #[derive(Debug,Clone,PartialEq)]
 pub enum IrGenError {
-    UnexpectedError,
+    UnexpectedError(NodeID),
 }

@@ -47,8 +47,10 @@ pub fn ir_faclit(
 
     let node = ast.get(id).unwrap();
 
-    let AstNodeKind::Literal(val) = node.get_kind() else {
-        return Err(IrGenError::UnexpectedError);
+    let lchild = node.get_lchild().unwrap();    
+    
+    let AstNodeKind::Literal(val) = ast.get(lchild).unwrap().get_kind() else {
+        return Err(IrGenError::UnexpectedError(lchild));
     };
 
     let ir_func = iloc

@@ -47,7 +47,7 @@ pub fn handle_statementlist(
                         TokenType::Return => StatementKind::Return,
                         TokenType::Semic => StatementKind::Empty,
                         TokenType::RBrace => {
-                            p.set_cur_end(a,p.get_rchild_end(a).unwrap());
+                            p.set_cur_end(a,start);
                             p.set_curnode(p.get_parent(a));
                             return Ok(());
                         },

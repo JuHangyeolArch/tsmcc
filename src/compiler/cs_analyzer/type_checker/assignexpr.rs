@@ -49,12 +49,14 @@ pub fn tc_assexpr(
 
     let (rtype,rside) = tc_assexpr(ast,func_table,rchild,entry)?;
 
+
+    
     if !ltype.is_equal(rtype) {
         return Err(CsError::TypeMismatched(id))
     };
 
-    if lside == SideKind::Lvalue {
-        return Err(CsError::AssginToRValue(lchild))
+    if lside == SideKind::Rvalue {
+        return Err(CsError::AssginToRValue(id))
     };
     
     Ok((ltype,SideKind::Rvalue))

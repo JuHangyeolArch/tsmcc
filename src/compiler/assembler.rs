@@ -46,6 +46,7 @@ impl Assembler {
     pub fn step(&mut self, asm_program: &AssemblyProgram, asm_table: &mut AsmTable, machine_code: &mut MachineProgram) -> Option<Result<(), CompileError>>{
         if !self.first_ended {
             self.first_pass(asm_program, asm_table);
+            println!("{:#?}",asm_table);
             return Some(Ok(()));            
         } else if  !self.second_ended {
             self.second_pass(asm_program,asm_table,machine_code); 

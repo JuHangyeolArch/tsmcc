@@ -57,6 +57,7 @@ impl CodeGenerator {
             asm_libraries::init_asm(asm_program);
             asm_program.add_line(None, AssemblyInstruction::ORG(U12::new(0x100)), None);        
             self.resolver.init_resolver(ir_program);
+            self.is_inited = true;
         }
         
         if !self.is_over {

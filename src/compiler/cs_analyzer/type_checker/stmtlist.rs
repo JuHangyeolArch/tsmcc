@@ -41,7 +41,8 @@ pub fn tc_stmtlist(
         return Ok(());
     };
     
-    statement::tc_statement(ast,func_table,lchild,entry)?;            
+    statement::tc_statement(ast,func_table,lchild,entry)?;
+
     let rchild = node.get_rchild().unwrap();
     tc_stmtlist(ast,func_table,rchild,entry)
 

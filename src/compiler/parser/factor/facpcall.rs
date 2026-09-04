@@ -23,14 +23,15 @@ impl Parser {
     pub fn handle_facpcall(
         &mut self,
         token_list: &TokenList,
-        ast: &mut Ast ) -> Result<(), ParseError> {
-
+        ast: &mut Ast ) -> Result<(), ParseError> {            
 
             self.node_case(
                 ast,
                 token_list,
                 |p, a, l| {
 
+                    println!("{:#?}",p.get_curnode());
+                    
                     let start: usize = p.get_cur_start(a);
 
                     let TokenType::Id(str) = l
@@ -61,7 +62,7 @@ impl Parser {
                         return Err(ParseError::InvalidSyntax(start));
                     }
                     
-                    p.push_lchild(
+                    p.push_rchild(
                         a,
                         AstNodeKind::ArgList,
                         start + 1,
@@ -74,7 +75,7 @@ impl Parser {
                     let end: usize = p
                         .get_rchild_end(a)
                         .unwrap();
-
+                    
                     if ! matches!(l.get(end).unwrap().kind(), TokenType::RParenth) {
                         return Err(ParseError::InvalidSyntax(end));
                     }                

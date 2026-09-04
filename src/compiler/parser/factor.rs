@@ -34,11 +34,11 @@ impl Parser {
         let start: usize = self.get_cur_start(ast);
         
         match self.case_factor(token_list,start) {
-            FactorKind::Literal => {self.handle_faclit(token_list,ast)},
-            FactorKind::Variable => {self.handle_facvar(token_list,ast)},
-            FactorKind::ParenthAssign => {self.handle_facassign(token_list,ast)},
-            FactorKind::TypeCast => {self.handle_factypecast(token_list,ast)},
-            FactorKind::ProcedureCall => {self.handle_facpcall(token_list,ast)},
+            FactorKind::Literal => {self.set_curnode_kind(ast,AstNodeKind::Factor(FactorKind::Literal)); self.handle_faclit(token_list,ast)},
+            FactorKind::Variable => {self.set_curnode_kind(ast,AstNodeKind::Factor(FactorKind::Variable)); self.handle_facvar(token_list,ast)},
+            FactorKind::ParenthAssign => {self.set_curnode_kind(ast,AstNodeKind::Factor(FactorKind::ParenthAssign)); self.handle_facassign(token_list,ast)},
+            FactorKind::TypeCast => {self.set_curnode_kind(ast,AstNodeKind::Factor(FactorKind::TypeCast)); self.handle_factypecast(token_list,ast)},
+            FactorKind::ProcedureCall => {self.set_curnode_kind(ast,AstNodeKind::Factor(FactorKind::ProcedureCall)); self.handle_facpcall(token_list,ast)},
             FactorKind::Nil => {return Err(ParseError::InvalidSyntax(start))}
         }
 

@@ -34,6 +34,15 @@ impl AssemblyProgram {
         self.lines.push(AssemblyLine::new(label,instruction, origin));
     }
 
+    pub fn last_line(&self) -> Option<&AssemblyLine> {
+
+        if self.count_line() > 0 {
+            self.get_line(self.count_line() - 1)
+        } else {
+            None
+        }
+    }
+    
     pub fn get_line(&self, pos: usize) -> Option<&AssemblyLine>{
         self.lines.get(pos)
     }

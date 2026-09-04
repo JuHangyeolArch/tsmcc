@@ -120,7 +120,7 @@ pub fn asm_div(asm_prog: &mut AssemblyProgram) {
     asm_prog.add_line(None, AssemblyInstruction::STA(AssemblyValue::Label(AssemblyLabel('D','R','M')) , false), None);
 
     asm_prog.add_line(None, AssemblyInstruction::SNA, None);
-    asm_prog.add_line(None, AssemblyInstruction::BUN(AssemblyValue::Label(AssemblyLabel('D','R','P')) , false), None);
+    asm_prog.add_line(None, AssemblyInstruction::BUN(AssemblyValue::Label(AssemblyLabel('D','P','P')) , false), None);
     
     //restore remainder
     asm_prog.add_line(None, AssemblyInstruction::ADD(AssemblyValue::Label(AssemblyLabel('D','I','X')) , false), None);
@@ -128,7 +128,7 @@ pub fn asm_div(asm_prog: &mut AssemblyProgram) {
     asm_prog.add_line(None, AssemblyInstruction::BUN(AssemblyValue::Label(AssemblyLabel('D','C','N')) , false), None);
 
     //increment quotient
-    asm_prog.add_line(None, AssemblyInstruction::LDA(AssemblyValue::Label(AssemblyLabel('D','I','P')) , false), None);
+    asm_prog.add_line(Some(AssemblyLabel('D','P','P')), AssemblyInstruction::LDA(AssemblyValue::Label(AssemblyLabel('D','I','P')) , false), None);
     asm_prog.add_line(None, AssemblyInstruction::INC, None);
     asm_prog.add_line(None, AssemblyInstruction::STA(AssemblyValue::Label(AssemblyLabel('D','I','P')) , false), None);
 

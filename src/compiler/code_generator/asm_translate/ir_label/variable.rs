@@ -39,7 +39,7 @@ impl CodeGenerator {
     ) -> Result<(),CodeGenError> {
 
         let var = self.resolver.res_variable(entry,idx).unwrap();
-        let reg = self.resolver.res_register(entry,idx).unwrap();
+        let reg = self.resolver.res_register(entry,target).unwrap();
 
         self.calc_load_tmp1(asm_program,var,line_number);
         self.store_temp1_stack(asm_program,reg,line_number);
@@ -56,7 +56,7 @@ impl CodeGenerator {
     ) -> Result<(),CodeGenError> {
 
         let par = self.resolver.res_parameter(entry,idx).unwrap();
-        let reg = self.resolver.res_register(entry,idx).unwrap();
+        let reg = self.resolver.res_register(entry,target).unwrap();
 
         self.calc_load_tmp1(asm_program,par,line_number);
         self.store_temp1_stack(asm_program,reg,line_number);

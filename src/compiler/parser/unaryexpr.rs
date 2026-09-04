@@ -54,11 +54,12 @@ pub fn handle_unaryexpr(
                         start,
                         None
                     );
+                    return Ok(());
                 }
 
                     p.push_lchild(
                         a,
-                        AstNodeKind::UnaryExpr(UnaryOpKind::Nil),
+                        AstNodeKind::UnaryExpr(opkind),
                         start+1,
                         None
                     );                
@@ -66,7 +67,7 @@ pub fn handle_unaryexpr(
                 Ok(())
             },
             |p, a, l|{
-                p.set_cur_end(a,p.get_rchild_end(a).unwrap());
+                p.set_cur_end(a,p.get_lchild_end(a).unwrap());
                 p.set_curnode(p.get_parent(a));
                 Ok(())
             },

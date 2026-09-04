@@ -40,7 +40,7 @@ pub fn tc_valuekind(
 
     let rchild = node.get_rchild().unwrap();
 
-    let depth = stars::tc_stars(ast,id)?;
+    let depth = stars::tc_stars(ast,rchild)?;
 
     Ok(ValueType::new(base_kind, depth))
 }

@@ -51,7 +51,7 @@ pub fn ir_facvar(
 
     let lchild = node.get_lchild().unwrap();
 
-    let name = id::ir_id(ast,id)?;
+    let name = id::ir_id(ast,lchild)?;
 
     let ir_func = iloc
         .get_mut_bypos(entry)
@@ -64,16 +64,16 @@ pub fn ir_facvar(
     let Some(mut var_idx) = cur_func
         .get_unmut_vars()
         .get_index(&name) else {
-            return Err(IrGenError::UnexpectedError);
+            return Err(IrGenError::UnexpectedError(id));
         };
     ir_func.update_regmax(reg_count);
     
     if cur_func.get_params() <= var_idx {
         var_idx = var_idx - cur_func.get_params();
         ir_func.add_line(IlocInstruction::Empty,Some(IlocLabel::Variable(var_idx,Register(reg_count))), id);
+    } else {
+        ir_func.add_line(IlocInstruction::Empty,Some(IlocLabel::Paremeter(var_idx,Register(reg_count))), id);
     }
-
-    ir_func.add_line(IlocInstruction::Empty,Some(IlocLabel::Paremeter(var_idx,Register(reg_count))), id);
     
     Ok((SideKind::LValue,reg_count))
 }

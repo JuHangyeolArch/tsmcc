@@ -45,6 +45,8 @@ pub fn sc_funciface(
         return Err(CsError::DucplicateDeclaration(id));
     };
     
+    println!("{:#?}", dec.get_type());
+    
     func_table.add(&dec.get_name(),&dec.get_type(),Some(lchild));
     let entry = func_table.count() - 1;
 

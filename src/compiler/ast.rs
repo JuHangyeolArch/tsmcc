@@ -94,7 +94,7 @@ impl AstNode {
     }
 
     pub fn get_end(&self) -> Option<usize>{
-        self.span.get_start()
+        self.span.get_end()
     }
     
     pub fn set_start(&mut self, pos: usize) {

@@ -46,12 +46,14 @@ pub fn tc_unaryexpr(
             return Err(CsError::UnexpectedError);
         };
 
+
     if opkind == UnaryOpKind::Nil {
-        return factor::tc_factor(ast, func_table, lchild, entry)
+        return factor::tc_factor(ast, func_table, lchild, entry);
     }
     
     let (ltype,lside) = tc_unaryexpr(ast, func_table, lchild, entry)?;
 
+    
     match opkind {
         UnaryOpKind::Plus | UnaryOpKind::Minus => {
             Ok((ltype,SideKind::Rvalue))
@@ -72,7 +74,6 @@ pub fn tc_unaryexpr(
         },
         _ => Err(CsError::UnexpectedError)
     }
-
             
 
 }

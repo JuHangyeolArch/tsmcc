@@ -164,12 +164,14 @@ impl Parser {
         &mut self,
         token_list: &TokenList,
         ast: &mut Ast) -> Result<(), ParseError> {
-
+            
             let node_id  = self.get_curnode().unwrap_or_else(|| {
                 self.init_ast(token_list, ast);
                 self.get_curnode().unwrap()
             });
 
+            //println!("tnum:{:#?} t:{:#?} node:{:#?}", ast.get(self.get_curnode().unwrap()).unwrap().get_start(),token_list.get(ast.get(self.get_curnode().unwrap()).unwrap().get_start()),self.get_curnode());
+            
             match ast.get(node_id) {
                 Some(node) => match node.get_kind() {
                     AstNodeKind::Program => self.handle_program(token_list,ast),
@@ -207,8 +209,9 @@ impl Parser {
             ast.alloc(AstNodeKind::Program,
                 None,
                 0,
-                Some(token_list.as_iter().count() - 1))
+                Some(token_list.len() - 1))
         ));
+        println!("check");
     }
 
     

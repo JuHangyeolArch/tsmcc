@@ -53,14 +53,14 @@ pub fn ir_factor(
 ) -> Result<(SideKind,usize),IrGenError> {
 
     let node = ast.get(id).unwrap();
-
+    
     match node.get_kind() {
         AstNodeKind::Factor(FactorKind::Variable) => facvar::ir_facvar(ast, func_table,id,entry,iloc,reg_count),
         AstNodeKind::Factor(FactorKind::Literal) => faclit::ir_faclit(ast, func_table,id,entry,iloc,reg_count),
         AstNodeKind::Factor(FactorKind::ParenthAssign) => facexpr::ir_facexpr(ast, func_table,id,entry,iloc,reg_count),
         AstNodeKind::Factor(FactorKind::ProcedureCall) => facpcall::ir_facpcall(ast, func_table,id,entry,iloc,reg_count),
         AstNodeKind::Factor(FactorKind::TypeCast) => factypecast::ir_factypecast(ast, func_table,id,entry,iloc,reg_count),
-        _ => Err(IrGenError::UnexpectedError)
+        _ => Err(IrGenError::UnexpectedError(id))
     }
 
     

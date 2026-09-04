@@ -52,10 +52,11 @@ pub fn ir_arglist(
 
     let node = ast.get(id).unwrap();
     
-    if let Some(lchild) = node.get_lchild() {
+    if let Some(lchild) = node.get_lchild() {        
 
-        let (arg_kind,arg_reg) = assignexpr::ir_assexpr(ast,func_table,lchild,entry,iloc,reg_count)?;
-
+        
+        let (arg_kind,arg_reg) = assignexpr::ir_assexpr(ast,func_table,lchild,entry,iloc,reg_count)?;        
+        
         let arg_eval_reg: usize = if arg_kind == SideKind::LValue {
             loadval::ir_loadval(id,entry,iloc,arg_reg)
         } else {
@@ -70,6 +71,7 @@ pub fn ir_arglist(
             .add_line(IlocInstruction::Empty,Some(IlocLabel::ParamIn(Register(arg_eval_reg))), id);
         
     } else {
+        
         return Ok(());
     };            
     

@@ -49,9 +49,8 @@ impl Parser {
                     
                     if ! matches!(l.get(start).unwrap().kind(), TokenType::Semic) {
                         return Err(ParseError::InvalidSyntax(start));
-                    }                
-
-                    p.set_cur_end(a,start+1);
+                    }                     
+                    p.set_cur_end(a,start + 1);
                     p.set_curnode(p.get_parent(a));
                     Ok(())
                 },

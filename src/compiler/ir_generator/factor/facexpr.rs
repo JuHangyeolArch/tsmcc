@@ -50,7 +50,7 @@ pub fn ir_facexpr(
     let node = ast.get(id).unwrap();
 
     let AstNodeKind::Identifier(name) = node.get_kind() else {
-        return Err(IrGenError::UnexpectedError);
+        return Err(IrGenError::UnexpectedError(id));
     };
 
     let lchild = node.get_lchild().unwrap();

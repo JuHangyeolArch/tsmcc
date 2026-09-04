@@ -51,8 +51,8 @@ pub fn handle_condexpr(
                     .get_lchild_end(a)
                     .unwrap();
                 
-                if ! matches!(l.get(start).unwrap().kind(), TokenType::Assign) {
-                    p.set_cur_end(a,p.get_rchild_end(a).unwrap());
+                if ! matches!(l.get(start).unwrap().kind(), TokenType::Equal) {
+                    p.set_cur_end(a,p.get_lchild_end(a).unwrap());
                     p.set_curnode(p.get_parent(a));
                     return Ok(());
                 }

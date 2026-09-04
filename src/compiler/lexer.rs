@@ -124,7 +124,7 @@ impl LexicalAnalyzer {
                 match self.slice_while(source,|ch| ch == '=').as_str() {
                     "=" => {
                         Token::new(
-                            TokenType::Comma,
+                            TokenType::Assign,
                             self.text_pos -1,
                             self.text_pos
                         )},
@@ -185,7 +185,7 @@ impl LexicalAnalyzer {
                 }
             }
 
-            '1'..='9' => {
+            '0'..='9' => {
                 let start_pos = self.text_pos;
                 let lexeme = self.slice_while(
                     source,

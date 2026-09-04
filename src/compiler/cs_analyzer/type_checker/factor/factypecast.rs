@@ -40,7 +40,7 @@ pub fn tc_factypecast(
     let node = ast.get(id).unwrap();    
     let lchild = node.get_lchild().unwrap();    
 
-    let casting_type = valuekind::tc_valuekind(ast,id)?;
+    let casting_type = valuekind::tc_valuekind(ast,lchild)?;
     
     let rchild = node.get_rchild().unwrap();
 

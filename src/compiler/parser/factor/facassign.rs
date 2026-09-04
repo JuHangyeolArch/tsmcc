@@ -51,7 +51,7 @@ impl Parser {
                         .get_lchild_end(a)
                         .unwrap();
 
-                    if ! matches!(l.get(end).unwrap().kind(), TokenType::RBrace) {
+                    if ! matches!(l.get(end).unwrap().kind(), TokenType::RParenth) {
                         return Err(ParseError::InvalidSyntax(end));
                     }                
                 

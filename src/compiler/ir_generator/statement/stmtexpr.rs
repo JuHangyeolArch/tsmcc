@@ -46,13 +46,8 @@ pub fn ir_stmtexpr(
 
     let node = ast.get(id).unwrap();
     let lchild = node.get_lchild().unwrap();
-
-    let localsize = iloc
-        .get_mut_bypos(entry)
-        .unwrap()
-        .get_localsize();
     
-    assignexpr::ir_assexpr(ast, func_table,lchild,entry,iloc,1)?;
+    assignexpr::ir_assexpr(ast, func_table,lchild,entry,iloc,0)?;
     
     Ok(())
 

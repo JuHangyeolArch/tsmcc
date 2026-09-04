@@ -24,16 +24,14 @@ pub fn handle_arglist(
     &mut self,
     token_list: &TokenList,
     ast: &mut Ast ) -> Result<(), ParseError> {
-
-
+        
         self.node_case(
             ast,
             token_list,
             |p, a, l| {
 
                 let start: usize = p.get_cur_start(a);
-               
-
+                
                 if matches!(l.get(start).unwrap().kind(), TokenType::RParenth) {
                     p.set_cur_end(a,start);
                     p.set_curnode(p.get_parent(a));
@@ -44,19 +42,17 @@ pub fn handle_arglist(
                         start,
                         None,
                     );
-                    p.set_curnode(p.get_lchild(a));
                 }
                 
                 Ok(())
             },
             |p, a, l|{
-
+                
                 let mut start: usize = p
                     .get_lchild_end(a)
                     .unwrap();
 
                 let token_kind = l.get(start).unwrap().kind();
-
                 
                 if ! matches!(token_kind.clone(), TokenType::Comma) {
                     if ! matches!(token_kind, TokenType::RParenth){
