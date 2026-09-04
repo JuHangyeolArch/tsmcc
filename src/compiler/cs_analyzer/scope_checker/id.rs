@@ -33,7 +33,7 @@ pub fn sc_id(
     let node = ast.get(id).unwrap();
 
     let AstNodeKind::Identifier(id) = node.get_kind() else {
-        return Err(CsError::UnexpectedError);
+        return Err(CsError::UnexpectedError(id));
     };
 
     Ok(id)

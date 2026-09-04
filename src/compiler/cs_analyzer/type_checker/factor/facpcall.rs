@@ -44,7 +44,7 @@ pub fn tc_facpcall(
 
     let Some(func_info) = func_table
         .get_byname(&func_name) else {
-            return Err(CsError::UnexpectedError)
+            return Err(CsError::UnexpectedError(id))
         };
 
     let return_type = func_info.get_type();

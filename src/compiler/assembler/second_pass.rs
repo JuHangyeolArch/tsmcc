@@ -36,8 +36,9 @@ impl Assembler {
 
             match line.get_inst() {
 
-                AssemblyInstruction::ORG(address) => { self.program_counter = address.value();}
-                AssemblyInstruction::END => { self.second_ended = true; return;}
+                AssemblyInstruction::ORG(address) => { self.program_counter = address.value();},
+                AssemblyInstruction::END => { self.second_ended = true; return;},
+                AssemblyInstruction::Data(val) => machine_code.push(U12::new(self.program_counter) , val , idx),
                 AssemblyInstruction::AND(val, indirect) => machine_code.push(U12::new(self.program_counter) , 0x0000 + if indirect {0x8000} else {0x0000} + asm_table.resolve_value(val), idx) ,
                 AssemblyInstruction::ADD(val, indirect) => machine_code.push(U12::new(self.program_counter) , 0x1000 + if indirect {0x8000} else {0x0000} + asm_table.resolve_value(val), idx) ,
                 AssemblyInstruction::LDA(val, indirect) => machine_code.push(U12::new(self.program_counter) , 0x2000 + if indirect {0x8000} else {0x0000} + asm_table.resolve_value(val), idx) ,

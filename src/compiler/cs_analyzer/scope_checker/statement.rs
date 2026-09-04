@@ -53,6 +53,6 @@ pub fn sc_statement(
         },
         AstNodeKind::Statement(StatementKind::Return) => stmtexpr::sc_stmtexpr(ast,func_table,id,entry,ss),
         AstNodeKind::Statement(StatementKind::Empty) => Ok(()),
-        _ => Err(CsError::UnexpectedError)
+        _ => Err(CsError::UnexpectedError(id))
     }
 }

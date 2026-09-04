@@ -47,7 +47,9 @@ pub fn handle_unaryexpr(
                     _ => {opkind = UnaryOpKind::Nil}                    
                 }
 
-                if ! matches!(opkind, UnaryOpKind::Plus |UnaryOpKind::Minus |UnaryOpKind::Reference |UnaryOpKind::Dereference) {
+                p.set_curnode_kind(a, AstNodeKind::UnaryExpr(opkind.clone()));
+                
+                if matches!(opkind, UnaryOpKind::Nil) {
                     p.push_lchild(
                         a,
                         AstNodeKind::Factor(FactorKind::Nil),
@@ -57,12 +59,12 @@ pub fn handle_unaryexpr(
                     return Ok(());
                 }
 
-                    p.push_lchild(
-                        a,
-                        AstNodeKind::UnaryExpr(opkind),
-                        start+1,
-                        None
-                    );                
+                p.push_lchild(
+                    a,
+                    AstNodeKind::UnaryExpr(UnaryOpKind::Nil),
+                    start+1,
+                    None
+                );                
                 
                 Ok(())
             },

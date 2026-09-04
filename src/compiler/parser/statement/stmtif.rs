@@ -32,20 +32,13 @@ impl Parser {
                 |p, a, l| {
                     
                     let start: usize =  p.get_cur_start(a);
-                    let mut pos = start;
-
-                    
-                    if ! matches!(l.get(pos).unwrap().kind(), TokenType::If) {
-                        return Err(ParseError::InvalidSyntax(pos));
-                    }
-                    pos = pos +1;
+                    let mut pos = start + 1;
 
                     if ! matches!(l.get(pos).unwrap().kind(), TokenType::LParenth) {
                         return Err(ParseError::InvalidSyntax(pos));
                     }
                     pos = pos +1;
                     
-
 
                     p.push_lchild(
                         a,
@@ -63,15 +56,24 @@ impl Parser {
                         .get_lchild_end(a)
                         .unwrap();
 
-                    if ! matches!(l.get(start).unwrap().kind(), TokenType::LBrace) {
+                    let mut pos = start;
+                    
+                    if ! matches!(l.get(pos).unwrap().kind(), TokenType::RParenth) {
+                        return Err(ParseError::InvalidSyntax(start));
+                    }
+                    pos = pos + 1;
+                    
+                    if ! matches!(l.get(pos).unwrap().kind(), TokenType::LBrace) {
                         return Err(ParseError::InvalidSyntax(start));
                     }
 
-                
+                    pos = pos + 1;
+
+                    
                     p.push_rchild(
                         a,
                         AstNodeKind::Statement(StatementKind::Compound),
-                        start + 1,
+                        pos,
                         None
                     ); 
                 
@@ -82,13 +84,13 @@ impl Parser {
 
 
                     let end: usize = p
-                        .get_lchild_end(a)
+                        .get_rchild_end(a)
                         .unwrap();
-
+                    
                     if ! matches!(l.get(end).unwrap().kind(), TokenType::RBrace) {
                         return Err(ParseError::InvalidSyntax(end));
                     }                
-                
+
                     p.set_cur_end(a,end+1);
                     p.set_curnode(p.get_parent(a));
                     Ok(())

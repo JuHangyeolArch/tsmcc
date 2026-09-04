@@ -19,7 +19,7 @@
 
 
 
-* TODO 코드 작성
+* DONE 코드 작성
 
 ** DONE 멀티스레드 구조 작성
 
@@ -47,9 +47,9 @@
 
 1) [X] ast node type specify
 2) [X] struct node tree as vec
-3) [-] let parser match the syntax of the node and bind it to the tree -> match in progres
+3) [X] let parser match the syntax of the node and bind it to the tree -> match in progres
    - [X] each child node is degree of progress -> no need to store in parser struct
-   - [-] match every node type in case of (none, none), (left, none), (left, right)->just go to parent
+   - [X] match every node type in case of (none, none), (left, none), (left, right)->go to parent
      -기존 함수 너무 길음 = 다 뜯어 고치기 -> 함수별로 매치하고 내부에서 자식 상태 사용 
      =>
      1. [X] Program,
@@ -76,22 +76,22 @@
 	 * [X] sub
      15. [X] Term(MultiplicativeOpKind),
      16. [X] UnaryExpr(UnaryOpKind),
-     17. [ ] Factor(FactorKind),
-     18. [ ] Identifier(String),
-     19. [ ] Literal(i32),
+     17. [X] Factor(FactorKind),
+     18. [X] Identifier(String),
+     19. [X] Literal(i32),
 
 
 
 
-** TODO 문맥민감분석기 개발
+** DONE 문맥민감분석기 개발
 
-** TODO IR 제네레이터개발
+** DONE IR 제네레이터개발
 
-** TODO 코드 제네레이터개발
+** DONE 코드 제네레이터개발
 
-** TODO 어셈블러 개발
+** DONE 어셈블러 개발
 
-** TODO 하나로 합치기
+** DONE 하나로 합치기
 
 * TODO 테스트
 

@@ -96,5 +96,5 @@ pub enum CsError {
     CannotDereference(NodeID),
     InvalidArguement(NodeID),
     PossiblyNoReturn(usize),
-    UnexpectedError,
+    UnexpectedError(NodeID),
 }

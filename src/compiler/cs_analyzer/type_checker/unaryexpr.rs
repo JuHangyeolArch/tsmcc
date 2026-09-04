@@ -43,7 +43,7 @@ pub fn tc_unaryexpr(
         .get(id)
         .unwrap()
         .get_kind() else {
-            return Err(CsError::UnexpectedError);
+            return Err(CsError::UnexpectedError(id));
         };
 
 
@@ -72,7 +72,7 @@ pub fn tc_unaryexpr(
 
             Ok((deref_type,SideKind::Lvalue))            
         },
-        _ => Err(CsError::UnexpectedError)
+        _ => Err(CsError::UnexpectedError(id))
     }
             
 

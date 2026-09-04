@@ -50,7 +50,7 @@ pub fn tc_factor(
         AstNodeKind::Factor(FactorKind::ParenthAssign) => facexpr::tc_facexpr(ast, func_table,id,entry),
         AstNodeKind::Factor(FactorKind::ProcedureCall) => facpcall::tc_facpcall(ast, func_table,id,entry),
         AstNodeKind::Factor(FactorKind::TypeCast) => factypecast::tc_factypecast(ast, func_table,id,entry),
-        _ => Err(CsError::UnexpectedError)
+        _ => Err(CsError::UnexpectedError(id))
     }
 
 

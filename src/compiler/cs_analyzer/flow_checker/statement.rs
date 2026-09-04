@@ -48,6 +48,6 @@ pub fn fc_statement(
         AstNodeKind::Statement(StatementKind::Compound) => stmtcomp::fc_stmtcomp(ast,func_table,id,entry,cur_flow),
         AstNodeKind::Statement(StatementKind::Return) => stmtret::fc_stmtret(ast,func_table,id,entry,cur_flow),
         AstNodeKind::Statement(StatementKind::Empty) => Ok((cur_flow)),
-        _ => Err(CsError::UnexpectedError)
+        _ => Err(CsError::UnexpectedError(id))
     }
 }

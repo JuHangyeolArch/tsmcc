@@ -46,7 +46,7 @@ pub fn tc_facvar(
         .unwrap()
         .get_unmut_vars()
         .get_byname(&var_name) else {
-            return Err(CsError::UnexpectedError);
+            return Err(CsError::UnexpectedError(id));
         };
     
     Ok((var.get_type(),SideKind::Lvalue))

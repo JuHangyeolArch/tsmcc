@@ -30,6 +30,7 @@ impl Parser {
                 ast,
                 token_list,
                 |p, a, l| {
+                    p.set_cur_end(a,p.get_cur_start(a)+1);
                     p.set_curnode(p.get_parent(a));
                     Ok(())
                 },

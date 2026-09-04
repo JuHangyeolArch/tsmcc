@@ -41,11 +41,12 @@ pub fn sc_unaryexpr(
     let node = ast.get(id).unwrap();
     let lchild = node.get_lchild().unwrap();
 
+    println!("a {:#?}",id);
     let AstNodeKind::UnaryExpr(opkind) = ast
         .get(id)
         .unwrap()
         .get_kind() else {
-            return Err(CsError::UnexpectedError);
+            return Err(CsError::UnexpectedError(id));
         };
     
     match opkind {

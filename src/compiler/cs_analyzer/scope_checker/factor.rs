@@ -48,7 +48,7 @@ pub fn sc_factor(
         AstNodeKind::Factor(FactorKind::ParenthAssign) => facexpr::sc_facexpr(ast, func_table,id,entry,ss),
         AstNodeKind::Factor(FactorKind::ProcedureCall) => facpcall::sc_facpcall(ast, func_table,id,entry,ss),
         AstNodeKind::Factor(FactorKind::TypeCast) => factypecast::sc_factypecast(ast, func_table,id,entry,ss),
-        _ => Err(CsError::UnexpectedError)
+        _ => Err(CsError::UnexpectedError(id))
     }
 
     

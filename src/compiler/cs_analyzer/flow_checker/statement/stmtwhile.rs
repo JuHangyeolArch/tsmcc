@@ -57,7 +57,8 @@ pub fn fc_stmtwhile(
         .get_mut(cur_flow)
         .unwrap()
         .set_child(entrance_flow);
-    
+
+
     let exit_flow = stmtcomp::fc_stmtcomp(ast,func_table,rchild,entry,entrance_flow)?;
 
     func_table

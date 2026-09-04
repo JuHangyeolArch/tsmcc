@@ -36,7 +36,7 @@ pub fn sc_basicval(
     let node = ast.get(id).unwrap();
 
     let AstNodeKind::BasicValue(val) = node.get_kind() else {
-        return Err(CsError::UnexpectedError);
+        return Err(CsError::UnexpectedError(id));
     };
 
     Ok(val)

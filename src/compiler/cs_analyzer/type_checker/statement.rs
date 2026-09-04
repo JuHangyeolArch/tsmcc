@@ -47,6 +47,6 @@ pub fn tc_statement(
         AstNodeKind::Statement(StatementKind::Compound) => stmtcomp::tc_stmtcomp(ast,func_table,id,entry),
         AstNodeKind::Statement(StatementKind::Return) => stmtret::tc_stmtret(ast,func_table,id,entry),
         AstNodeKind::Statement(StatementKind::Empty) => Ok(()),
-        _ => Err(CsError::UnexpectedError)
+        _ => Err(CsError::UnexpectedError(id))
     }
 }

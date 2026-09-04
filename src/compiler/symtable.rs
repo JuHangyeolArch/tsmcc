@@ -346,6 +346,10 @@ impl FlowGraph {
     fn path_return(&self, cur_idx: usize, visited: &mut HashMap<usize, bool>) -> bool {
 
         let cur_node =  self.get(cur_idx).unwrap();
+
+        if  let Some(cache) = visited.get(&cur_idx) {
+            return *cache;
+        }
         
         let val_return = cur_node.has_return();
 

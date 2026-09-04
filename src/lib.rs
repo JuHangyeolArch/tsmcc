@@ -57,6 +57,10 @@ compiler_rx
                     match snapshot.phase {
                         compiler::SnapShotPhase::Lexer => {println!("{:#?}", snapshot.token_list.get(snapshot.token_list.len() - 1));},
                         compiler::SnapShotPhase::Parser => {
+                            let mut input = String::new();
+                            //io::stdin()
+                             //   .read_line(&mut input)
+                             //   .expect("입력을 읽지 못했습니다.");
                             println!("{:#?}", snapshot.ast);},
                         compiler::SnapShotPhase::CsAnalyzer => {println!("{:#?}",snapshot.func_table);},
                         compiler::SnapShotPhase::IrGenerator => { println!("{:#?}", snapshot.iloc);},
