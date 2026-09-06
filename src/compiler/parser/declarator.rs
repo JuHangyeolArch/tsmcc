@@ -39,7 +39,6 @@ impl Parser {
                         start,
                         None,
                     );
-                    println!("{:#?}",p.get_curnode());
                     Ok(())
                 },
                 |p, a, l|{
@@ -48,11 +47,6 @@ impl Parser {
                         .get_lchild_end(a)
                         .unwrap();
 
-                    println!("{:#?}", l
-                        .get(start)
-                        .unwrap()
-                        .kind());
-                    
                     let TokenType::Id(id) = l
                         .get(start)
                         .unwrap()

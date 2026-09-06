@@ -45,18 +45,6 @@ impl CodeGenerator {
         Ok(())
     }
 
-    pub fn parout(&mut self,
-        entry: usize,
-        line_number: usize,
-        asm_program: &mut AssemblyProgram,
-    ) -> Result<(),CodeGenError> {
-
-
-        self.inc_sp(asm_program,line_number);
-
-        Ok(())
-    }
-
     pub fn caller(&mut self,
         entry: usize,
         line_number: usize,

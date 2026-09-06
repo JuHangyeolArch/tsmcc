@@ -47,8 +47,6 @@ pub fn tc_condexpr(
     };
 
     let (rtype, _) = tc_condexpr(ast,func_table,rchild,entry)?;
-
-    println!("l:{:#?}, r:{:#?}",ltype, rtype);
     
     if !ltype.is_equal(rtype) {
         return Err(CsError::TypeMismatched(id))

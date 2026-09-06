@@ -45,7 +45,7 @@ impl CodeGenerator {
         if matches!(name, put) {
             self.built_in_put(entry,line_number,asm_program)
         } else if matches!(name, get) {
-            self.built_in_put(entry,line_number,asm_program)            
+            self.built_in_get(entry,line_number,asm_program)            
         } else {
             Err(CodeGenError::UnexpectedError)
         }
@@ -70,11 +70,13 @@ impl CodeGenerator {
         self.add_line(asm_program, AssemblyInstruction::OUT,line_number);
         self.add_line(asm_program, idiom::store_retval(),line_number);
 
-        let Some((label,_)) = self.resolver.res_func_ret(entry) else {
+        let Some((ret,_)) = self.resolver.res_func_ret(entry) else {
                 return Err(CodeGenError::UnexpectedError);
-            };
-            
-        idiom::bun_ind(label);
+        };
+
+        self.calc_spo(asm_program,ret,line_number);
+        self.add_line(asm_program,idiom::bun_ind_spo(),line_number);
+        
 
         Ok(())
         
@@ -95,6 +97,15 @@ impl CodeGenerator {
         self.add_line(asm_program, AssemblyInstruction::OUT,line_number);
         self.add_line(asm_program, idiom::store_retval(),line_number);
 
+        let Some((ret,_)) = self.resolver.res_func_ret(entry) else {
+                return Err(CodeGenError::UnexpectedError);
+        };
+
+        
+        self.calc_spo(asm_program,ret,line_number);
+        self.add_line(asm_program,idiom::bun_ind_spo(),line_number);
+
+        
         Ok(())
     }
 

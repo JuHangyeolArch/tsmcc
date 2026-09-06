@@ -72,9 +72,6 @@ pub fn ir_facpcall(
         .get_mut_bypos(entry)
         .unwrap()
         .add_line(IlocInstruction::Empty,Some(IlocLabel::Call(func_idx,Register(reg_count))), id);
-
-
-    println!("{:#?}",iloc);
     
     Ok((SideKind::RValue,reg_count))
 }

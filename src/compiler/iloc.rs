@@ -42,11 +42,8 @@ impl IlocProgram {
     pub fn find_by_global_pos(&self, pos: usize) -> Option<(usize,usize)> {
         let mut result = pos as i32;
         
-        println!("lne:{}",self.functions.len());
-        
         for i in 0..self.functions.len() as i32 {
             let func_line = self.functions.get(i as usize)?.len();
-            println!("e:{i} l:{func_line} r:{result}");
             
             if (result - func_line as i32) < 0 {
                 return Some((i as usize,result as usize));
@@ -82,7 +79,8 @@ pub enum IlocLabel {
     Call(usize,Register),
     Return(Register),
     Goto(GotoLabel),
-    BuiltIn(String)
+    BuiltIn(String),
+    NoOp,
 }
 
 #[derive(Debug, Clone, PartialEq)]

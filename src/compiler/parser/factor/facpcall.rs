@@ -30,8 +30,6 @@ impl Parser {
                 token_list,
                 |p, a, l| {
 
-                    println!("{:#?}",p.get_curnode());
-                    
                     let start: usize = p.get_cur_start(a);
 
                     let TokenType::Id(str) = l

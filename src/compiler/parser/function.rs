@@ -24,8 +24,6 @@ pub fn handle_function(
     &mut self,
     token_list: &TokenList,
     ast: &mut Ast ) -> Result<(), ParseError> {
-
-        println!("check {:#?}",self.cur_nodeid);
         
         self.node_case(
             ast,

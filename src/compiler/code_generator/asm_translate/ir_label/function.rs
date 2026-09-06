@@ -64,16 +64,22 @@ impl CodeGenerator {
         asm_program: &mut AssemblyProgram) -> Result<(),CodeGenError> {
 
 
+            let Some((ret,_)) = self.resolver.res_func_ret(entry) else {
+                return Err(CodeGenError::UnexpectedError);
+            };
+
+            self.calc_spo(asm_program,ret,line_number);
+            
+            for i in 0..self.resolver.get_reg_count(entry) {
+                self.inc_sp(asm_program, line_number);
+            }
+            
             for i in 0..self.resolver.get_var_count(entry) {
                 self.inc_sp(asm_program, line_number);
             }
 
-            let Some((label,_)) = self.resolver.res_func_ret(entry) else {
-                return Err(CodeGenError::UnexpectedError);
-            };
-            
-            idiom::bun_ind(label);
-            
+            self.add_line(asm_program,idiom::bun_ind_spo(),line_number);
+
             Ok(())
         }
 

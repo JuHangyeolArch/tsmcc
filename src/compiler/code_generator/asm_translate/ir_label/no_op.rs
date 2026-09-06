@@ -25,21 +25,25 @@ use crate::compiler::code_generator::{
         AsmFuncData,
         LabelResolver,
     },
+    asm_translate::idiom,
 };
 
 
 impl CodeGenerator {
 
-    fn match_ir_label(&mut self,
-        entry: usize,
-        ir_line: &IlocLabel,
-        asm_program: &mut AssemblyProgram) -> Result<(),CodeGenerator> {
+    pub fn no_op(&mut self,
+        line_number: usize,
+        asm_program: &mut AssemblyProgram,
+    ) -> Result<(),CodeGenError> {
 
-            match ir_line {}
-
-
-
-
+        self.add_line(
+            asm_program,
+            AssemblyInstruction::CLE,
+            line_number  
+        );
+        
+        Ok(())
     }
+
 
 }

@@ -107,6 +107,7 @@ impl LabelResolver {
     fn init_var(&mut self, entry: usize, ir_func: &IlocFunction) {
 
         let size= ir_func.get_localsize();
+
         
         for i in 0..size {
             let cur = self.consume_variable();
@@ -114,7 +115,6 @@ impl LabelResolver {
                 .get_mut(entry)
                 .unwrap()
                 .gen_variable(ir_func,i,cur);
-            
         }
 
     }
@@ -126,7 +126,6 @@ impl LabelResolver {
         
         for i in 0..size {
             let cur = self.consume_register();
-
             self.func_list
             .get_mut(entry)
             .unwrap()
@@ -141,8 +140,8 @@ impl LabelResolver {
         let size= ir_func.get_paramsize();
         
         for i in 0..size {
-            let cur = self.consume_variable();
             
+            let cur = self.consume_parameter();
             self.func_list
             .get_mut(entry)
             .unwrap()

@@ -64,7 +64,6 @@ impl CodeGenerator {
         for reg in regs.iter() {
             self.temp_label = Some(reg.1.0);
             self.add_line(asm_program,idiom::data(reg.1.1),line_number);
-            println!("{:#?}",asm_program.last_line());
 
         }
         

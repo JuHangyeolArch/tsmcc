@@ -61,6 +61,7 @@ impl CodeGenerator {
         let result_reg = self.resolver.res_register(entry,target).unwrap();
         
         self.calc_spo(asm_program,result_reg,line_number);
+
         self.add_line(
             asm_program,
             idiom::load(cons),

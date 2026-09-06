@@ -41,7 +41,6 @@ pub fn sc_unaryexpr(
     let node = ast.get(id).unwrap();
     let lchild = node.get_lchild().unwrap();
 
-    println!("a {:#?}",id);
     let AstNodeKind::UnaryExpr(opkind) = ast
         .get(id)
         .unwrap()

@@ -13,6 +13,7 @@ pub fn init_asm(asm_prog: &mut AssemblyProgram) {
     asm_div(asm_prog);    
     asm_srv(asm_prog);    
     asm_var(asm_prog);
+    asm_cond(asm_prog);
     
     asm_prog.add_line(None, AssemblyInstruction::ORG(U12::new(0x100)), None);
 }
@@ -22,8 +23,8 @@ pub fn asm_zero(asm_prog: &mut AssemblyProgram) {
     asm_prog.add_line(None, AssemblyInstruction::ORG(U12::new(0x0)), None);
 
     // 2
-    asm_prog.add_line(None, AssemblyInstruction::Data(0), None);
-    asm_prog.add_line(Some(AssemblyLabel('Z','R','O')), AssemblyInstruction::BUN(AssemblyValue::Label(AssemblyLabel('S','R','V')),false), None)    
+    asm_prog.add_line(Some(AssemblyLabel('Z','R','O')), AssemblyInstruction::Data(0), None);
+    asm_prog.add_line(None, AssemblyInstruction::BUN(AssemblyValue::Label(AssemblyLabel('S','R','V')),false), None)    
 }
 
 

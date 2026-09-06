@@ -67,56 +67,24 @@ pub fn ir_stmtwhile(
         .unwrap()
         .inc_internal_bc();
 
-
-
     let block_out = iloc
         .get_mut_bypos(entry)
         .unwrap()
         .inc_internal_bc();
 
-    
-    let zero_reg = expr_eval_reg + 1;
-
     iloc
         .get_mut_bypos(entry)
         .unwrap()
-        .add_line(
-        IlocInstruction::LoadI{
-            constant: 0,
-            target: Register(zero_reg),
-        },
-        None,
-        id
-    );        
+        .update_regmax(expr_eval_reg);    
     
-    let control_reg = zero_reg + 1;
-
-    iloc
-        .get_mut_bypos(entry)
-        .unwrap()
-        .update_regmax(control_reg);    
-
-    iloc
-        .get_mut_bypos(entry)
-        .unwrap()        
-        .add_line(
-            IlocInstruction::CmpEQ{
-                source1: Register(expr_eval_reg),
-                source2: Register(zero_reg),
-                target: Register(control_reg),
-            },
-            None,
-            id
-        );
-
     iloc
         .get_mut_bypos(entry)
         .unwrap()
         .add_line(
         IlocInstruction::Cbr{
-            source: Register(control_reg),
-            target_l1: GotoLabel(block_out),
-            target_l2: GotoLabel(block_in),
+            source: Register(expr_eval_reg),
+            target_l1: GotoLabel(block_in),
+            target_l2: GotoLabel(block_out),
         },
         None,
         id

@@ -54,7 +54,7 @@ pub fn ir_stmtif(
     let node = ast.get(id).unwrap();
     let lchild = node.get_lchild().unwrap();
 
-    let (expr_kind, expr_reg)= assignexpr::ir_assexpr(ast,func_table,lchild,entry,iloc,1)?;
+    let (expr_kind, expr_reg)= assignexpr::ir_assexpr(ast,func_table,lchild,entry,iloc,0)?;
 
     let expr_eval_reg: usize = if expr_kind == SideKind::LValue {
          loadval::ir_loadval(id,entry,iloc,expr_reg)
@@ -71,50 +71,19 @@ pub fn ir_stmtif(
         .unwrap()
         .inc_internal_bc();
 
-    
-    let zero_reg = expr_eval_reg + 1;
-
-
     iloc
         .get_mut_bypos(entry)
         .unwrap()
-        .add_line(
-        IlocInstruction::LoadI{
-            constant: 0,
-            target: Register(zero_reg),
-        },
-        None,
-        id
-    );        
-    
-    let control_reg = zero_reg + 1;
-
-    iloc
-        .get_mut_bypos(entry)
-        .unwrap()
-        .update_regmax(control_reg);    
-
-    iloc
-        .get_mut_bypos(entry)
-        .unwrap()
-        .add_line(
-        IlocInstruction::CmpEQ{
-            source1: Register(expr_eval_reg),
-            source2: Register(zero_reg),
-            target: Register(control_reg),
-        },
-        None,
-        id
-    );
+        .update_regmax(expr_eval_reg);    
 
     iloc
         .get_mut_bypos(entry)
         .unwrap()
         .add_line(
         IlocInstruction::Cbr{
-            source: Register(control_reg),
-            target_l1: GotoLabel(block_out),
-            target_l2: GotoLabel(block_in),
+            source: Register(expr_eval_reg),
+            target_l1: GotoLabel(block_in),
+            target_l2: GotoLabel(block_out),
         },
         None,
         id
@@ -129,6 +98,11 @@ pub fn ir_stmtif(
 
     stmtcomp::ir_stmtcomp(ast,func_table,rchild,entry,iloc)?;
 
+    iloc
+        .get_mut_bypos(entry)
+        .unwrap()
+        .add_line(IlocInstruction::Empty,Some(IlocLabel::NoOp), id);
+    
     iloc
         .get_mut_bypos(entry)
         .unwrap()

@@ -106,6 +106,13 @@ impl CodeGenerator {
         let true_branch = self.resolver.res_branch(entry,idx1).unwrap();
         let false_branch = self.resolver.res_branch(entry,idx2).unwrap();
 
+        self.calc_spo(asm_program,reg,line_number);
+        self.add_line(
+            asm_program,
+            idiom::load_ind_spo(),
+            line_number
+        );
+        
         self.add_line(
             asm_program,
             idiom::skip_zero_ac(),

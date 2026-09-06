@@ -57,7 +57,6 @@ impl CsAnalyzer {
                 return Some(Err(CompileError::CSError(err)));
             }               
             self.scope_checked = true;            
-            println!("sc");
             return Some(Ok(()));
         }
 
@@ -65,8 +64,7 @@ impl CsAnalyzer {
             if let Err(err) = type_checker::type_checker(ast,func_table) {
                 return Some(Err(CompileError::CSError(err)));
             }               
-            self.type_checked = true;            
-            println!("tc");
+            self.type_checked = true;
         }
 
 
@@ -74,9 +72,7 @@ impl CsAnalyzer {
             if let Err(err) = flow_checker::flow_checker(ast,func_table) {
                 return Some(Err(CompileError::CSError(err)));
             }               
-            self.flow_checked = true;            
-
-            println!("fc");
+            self.flow_checked = true;
             return Some(Ok(()));
         }
         

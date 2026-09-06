@@ -52,15 +52,6 @@ pub fn fc_function(
 
     stmtcomp::fc_stmtcomp(ast,func_table,rchild, entry, cur_flow)?;
 
-    println!("{:#?}",id);
-
-    println!("{:#?}",func_table
-        .get_bypos(entry)
-        .unwrap()
-        .get_mut_fg()
-    );
-
-
     if !func_table
         .get_bypos(entry)
         .unwrap()

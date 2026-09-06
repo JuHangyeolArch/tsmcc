@@ -48,7 +48,7 @@ pub fn spo() -> AssemblyLabel {
 }
 
 pub fn spt() -> AssemblyLabel {
-    AssemblyLabel('S','P','O')
+    AssemblyLabel('S','P','T')
 }
 
 
@@ -219,13 +219,28 @@ pub fn bsa_ind(label: AssemblyLabel) -> AssemblyInstruction {
 }
 
 pub fn bsa_sp() -> AssemblyInstruction {
-    bun(sp())
+    bsa(sp())
 }
+
+pub fn bsa_ind_sp() -> AssemblyInstruction {
+    bsa_ind(sp())
+}
+
 
 pub fn bun_spo() -> AssemblyInstruction {
     bun_ind(spo())
 }
 
+pub fn bun_ind_spo() -> AssemblyInstruction {
+    AssemblyInstruction::BUN(
+        AssemblyValue::Label(
+            spo()
+        )
+        ,
+        true
+    )
+
+}
 
 pub fn cmp_ac() -> AssemblyInstruction {
     AssemblyInstruction::CMA    
@@ -311,16 +326,16 @@ pub fn store_spt() -> AssemblyInstruction {
 
 
 pub fn store_ind_sp() -> AssemblyInstruction {
-    store(sp())
+    store_ind(sp())
 }
 
 pub fn store_ind_spo() -> AssemblyInstruction {
-    store(spo())
+    store_ind(spo())
 }
 
 
 pub fn store_ind_spt() -> AssemblyInstruction {
-    store(spt())
+    store_ind(spt())
 }
 
 
@@ -463,7 +478,7 @@ impl CodeGenerator {
         self.dec_sp(asm_program, origin);        
         self.add_line(
             asm_program,
-            bsa_sp(),
+            bsa_ind_sp(),
             origin
         );        
     }

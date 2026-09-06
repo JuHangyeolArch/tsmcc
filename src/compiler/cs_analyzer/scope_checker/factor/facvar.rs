@@ -40,8 +40,6 @@ pub fn sc_facvar(
 
     let var_name = id::sc_id(ast,lchild)?;
 
-    println!("{var_name}");
-
     if !ss.exist(var_name) {
         return Err(CsError::InvalidUse(id));
     };

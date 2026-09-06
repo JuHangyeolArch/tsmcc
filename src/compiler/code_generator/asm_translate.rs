@@ -58,10 +58,8 @@ impl CodeGenerator {
             return Ok(());
         };
 
-        println!("{:#?}", next);
-
         if self.cur_ir_func < next.0 {
-            self.func_data(self.cur_ir_func,self.cur_ir_line,asm_program)?;
+            self.func_data(self.cur_ir_func, self.cur_ir_line, asm_program)?;
         }
         
         (self.cur_ir_func,self.cur_ir_line) = next;
@@ -92,8 +90,6 @@ impl CodeGenerator {
 
 
     fn match_ir_line(&mut self, entry: usize, ir_line: &IlocLine, line_number: usize, asm_program: &mut AssemblyProgram) -> Result<(),CodeGenError> {
-
-        println!("{:#?}",ir_line);
         
         match ir_line.get_instruction() {
             IlocInstruction::Empty => { self.match_ir_label(entry,&ir_line.get_label().unwrap(),line_number,asm_program)},

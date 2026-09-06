@@ -169,8 +169,6 @@ impl Parser {
                 self.init_ast(token_list, ast);
                 self.get_curnode().unwrap()
             });
-
-            //println!("tnum:{:#?} t:{:#?} node:{:#?}", ast.get(self.get_curnode().unwrap()).unwrap().get_start(),token_list.get(ast.get(self.get_curnode().unwrap()).unwrap().get_start()),self.get_curnode());
             
             match ast.get(node_id) {
                 Some(node) => match node.get_kind() {
@@ -211,7 +209,6 @@ impl Parser {
                 0,
                 Some(token_list.len() - 1))
         ));
-        println!("check");
     }
 
     

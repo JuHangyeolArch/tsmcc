@@ -55,17 +55,12 @@ compiler_rx
                     break;
                 } else {
                     match snapshot.phase {
-                        compiler::SnapShotPhase::Lexer => {println!("{:#?}", snapshot.token_list.get(snapshot.token_list.len() - 1));},
-                        compiler::SnapShotPhase::Parser => {
-                            let mut input = String::new();
-                            //io::stdin()
-                             //   .read_line(&mut input)
-                             //   .expect("입력을 읽지 못했습니다.");
-                            println!("{:#?}", snapshot.ast);},
-                        compiler::SnapShotPhase::CsAnalyzer => {println!("{:#?}",snapshot.func_table);},
-                        compiler::SnapShotPhase::IrGenerator => { println!("{:#?}", snapshot.iloc);},
-                        compiler::SnapShotPhase::CodeGenerator => { println!("{:#?}", snapshot.assembly.last_line());},
-                        compiler::SnapShotPhase::Assembler => { println!("{:#?}", snapshot.assembly); break; println!("{:#?}", snapshot.machine_code);},
+                        compiler::SnapShotPhase::Lexer => {},//println!("{:#?}", snapshot.token_list.get(snapshot.token_list.len() - 1));},
+                        compiler::SnapShotPhase::Parser => {},//println!("{:#?}", snapshot.ast);},
+                        compiler::SnapShotPhase::CsAnalyzer => {},//println!("{:#?}",snapshot.func_table);},
+                        compiler::SnapShotPhase::IrGenerator => {},// println!("{:#?}", snapshot.iloc);},
+                        compiler::SnapShotPhase::CodeGenerator => {;},
+                        compiler::SnapShotPhase::Assembler => { println!("{:#?}", snapshot.iloc); println!("{:#?}", snapshot.assembly); break; println!("{:#?}", snapshot.machine_code);},
                         compiler::SnapShotPhase::Finished => { println!("done"); break;},
                         compiler::SnapShotPhase::Error => {println!("{:#?}",snapshot.error.unwrap()); break;},
                     }

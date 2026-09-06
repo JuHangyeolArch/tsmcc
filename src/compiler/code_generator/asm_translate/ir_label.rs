@@ -33,6 +33,7 @@ mod procedure_call;
 mod func_return;
 mod goto;
 mod built_ins;
+mod no_op;
 
 impl CodeGenerator {
 
@@ -46,8 +47,8 @@ impl CodeGenerator {
 
             match ir_label {
                 IlocLabel::FunctionStart(_) => self.func_start(entry,asm_program),
-                IlocLabel::FunctionPrologue => {self.epilogue(entry,line_number,asm_program)},
-                IlocLabel::FunctionEpilogue => {self.prologue(entry,line_number,asm_program)},
+                IlocLabel::FunctionPrologue => {self.prologue(entry,line_number,asm_program)},
+                IlocLabel::FunctionEpilogue => {self.epilogue(entry,line_number,asm_program)},
                 IlocLabel::Variable(idx, Register(target)) => {self.variable(entry,line_number,asm_program,*idx,*target)},
                 IlocLabel::Paremeter(idx, Register(target)) => {self.parameter(entry,line_number,asm_program,*idx,*target)},
                 IlocLabel::ParamIn(Register(source)) => {self.parin(entry,line_number,asm_program,*source)},
@@ -55,7 +56,8 @@ impl CodeGenerator {
                 IlocLabel::Return(Register(source)) => self.save_retval(entry,line_number,asm_program,*source),
                 IlocLabel::Goto(GotoLabel(idx)) => self.goto_label(entry,line_number,asm_program,*idx),
                 IlocLabel::BuiltIn(name) => {self.built_in(entry,line_number,asm_program,name)},
-
+                IlocLabel::NoOp => {self.no_op(line_number,asm_program)},
+                
             }
     }
 
