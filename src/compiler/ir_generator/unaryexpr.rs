@@ -66,34 +66,13 @@ pub fn ir_unaryexpr(
     
     let (right_kind,right_reg) = ir_unaryexpr(ast, func_table, lchild, entry,iloc,reg_count)?;
 
-    let ir_func = iloc
-        .get_mut_bypos(entry)
-        .unwrap();
-
-    
-    if opkind == UnaryOpKind::Reference  {
-
-        let ref_reg = right_reg + 1;
-        
-        ir_func.update_regmax(ref_reg);
-
-        ir_func.add_line(
-                IlocInstruction::Load{
-                    source: Register(right_reg),
-                    target: Register(ref_reg),
-                },
-                None,
-                id
-            );
-        return Ok((SideKind::RValue,ref_reg));
-    };
 
     let right_eval_reg: usize = if right_kind == SideKind::LValue {
         loadval::ir_loadval(id,entry,iloc,right_reg)
     } else {
         right_reg
-    };
- 
+    };    
+    
     match opkind {
         UnaryOpKind::Plus => {            
             Ok((SideKind::RValue,right_eval_reg))            
@@ -103,9 +82,13 @@ pub fn ir_unaryexpr(
             let negative_reg = negative::ir_negative(id,entry,iloc,right_eval_reg);
             Ok((SideKind::RValue, negative_reg))
         },
-        UnaryOpKind::Dereference => {
-            Ok((SideKind::LValue,right_eval_reg))            
+
+        UnaryOpKind::Reference => {
+            return Ok((SideKind::RValue,right_eval_reg));
         },
+        UnaryOpKind::Dereference => {
+            return Ok((SideKind::LValue,right_eval_reg));
+        },                            
         _ => Err(IrGenError::UnexpectedError(id))
     }
 

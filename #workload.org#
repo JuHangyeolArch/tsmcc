@@ -1,0 +1,122 @@
+
+
+* DONE 프로젝트 계획
+
+** DONE 프로젝트 구조 만들기
+
+1) [X] UI와 컴파일러 분리 
+2) [X] 컴파일러 모듈 나누기
+3) [X] 렉서 모듈 나누기  
+4) [X] 파서 모듈 나누기
+5) [X] AST 모듈 나누기
+6) [X] 전체 구조 스케치
+
+
+** DONE 명세 점검
+
+1) [X] 문법 점검
+2) [X] I/O 프렐류드 확인
+
+
+
+* DONE 코드 작성
+
+** DONE 멀티스레드 구조 작성
+
+1) [X] 파일 이름 입력받기
+2) [X] 파일 입력받기
+3) [X] 쓰레드 나누기
+4) [X] 컴파일러 동작, 상태 신호로 주고받기
+
+
+** DONE trimmer
+
+1) [X] 주석 전부삭제 -> 그냥 뒤에서 지우면 된다.
+
+** DONE 렉서 개발
+
+1. [X] next에 대해서 구현
+2. [X] next의 내부
+3. [X] 토큰 종류 enum으로 정의
+4. [X] 토큰에 대한 정의
+5. [X] 문자열 토큰 패턴매칭
+6. [X] 토큰이 str에 대한 참조를 포함하도록 하기
+7. [X] 서브스트링 반환하는 토큰 메서드 구현 -> 모든 결과물이 공유하는 이전 단계에 대한(시작, 끝) 벡터 참조 구조체를 구현함 
+
+** DONE 파서 개발
+
+1) [X] ast node 종류 정의
+2) [X] struct node tree as vec
+3) [X] parser match the syntax of the node and build it to the tree -> match in progres
+   - [X] each child node is degree of progress -> no need to store in parser struct
+   - [X] match node type in case of (none, none), (left, none), (left, right)->go to parent
+     -기존 함수 너무 길음 = 다 뜯어 고치기 -> 함수별로 매치하고 내부에서 자식 상태 사용
+     1. [X] Program,
+     2. [X] FunctionList,
+     3. [X] Function
+     4. [X] FunctionInterface,
+     5. [X] ParameterList,
+     6. [X] DeclarationList,
+     7. [X] Declaration,
+     8. [X] Declarator,
+     9. [X] ValueKind,
+     10. [X] StatementList,
+     11. [X] Statement(StatementKind),
+	 * [X] Expression
+	 * [X] If
+	 * [X] While -> If로 같이 처리 동일
+	 * [X] Compound
+	 * [X] Return,
+	 * [X] Empty
+     12. [X] AssginExpr,
+     13. [X] CondtionExpr,
+     14. [X] AdditiveExpr(AdditiveOpKind),
+	 * [X] add
+	 * [X] sub
+     15. [X] Term(MultiplicativeOpKind),
+     16. [X] UnaryExpr(UnaryOpKind),
+     17. [X] Factor(FactorKind),
+     18. [X] Identifier(String),
+     19. [X] Literal(i32),
+
+** DONE 문맥민감분석기 개발
+1) 스코프 분석
+   - [X] 함수마다 정보를 저장하는 레코드(선언정보, 변수) 작성
+   - [X] 함수를 만나면 선언정보와 함께 벡터에 레코드 생성
+   - [X] 파라미터 만나면 변수벡터에 저장하고 파라미터 개수 저장
+   - [X] 변수를 만나면 이름, 타입 저장
+   - [X] 함수호출시 벡터 조회, 없으면 에러
+   - [X] 변수 사용시 벡터 조회, 없으면 에러
+2) 타입 분석
+   - [X] 저장해놓은 테이블 이용. 따라서 함수의 원형부분과 변수 선언은 보지 않음.
+   - [X] 조건 연산자는 무조건 int형을 배출한다.
+   - [X] 역참조 연산자는 참조깊이를 하나 줄이고, 참조연산자는 그 반대가 되어야한다.
+   - [X] 좌항(LValue)와 우항(RValue)는 구분되어야한다.
+   - [ ] 사칙연산, 조건식, 대입식은 결과물로 RValue를 배출한다.
+   - [ ] 역참조 연산자는 결과물로 LValue를 배출한다.
+   - [ ] 참조연산자는 결과물로 항상 RValue를 배출한다.
+   - [ ] 
+   - [X] 
+
+3) 흐름 분석
+
+
+** DONE IR 제네레이터개발
+1)
+
+** DONE 코드 제네레이터개발
+1)
+
+
+** DONE 어셈블러 개발
+
+** DONE 하나로 합치기
+
+* DONE 테스트
+
+
+* TODO GUI 붙이기
+
+
+
+
