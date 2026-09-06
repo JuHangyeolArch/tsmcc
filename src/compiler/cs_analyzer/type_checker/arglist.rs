@@ -41,8 +41,6 @@ pub fn tc_arglist(
 
     let node = ast.get(id).unwrap();
 
-    let lchild: NodeID;
-
     if let Some(lchild) = node.get_lchild() {
         if index >= callee.get_params() {
             return Err(CsError::InvalidArguement(lchild));
@@ -54,6 +52,7 @@ pub fn tc_arglist(
             .get_bypos(index)
             .unwrap()
             .get_type()) {
+
                 return Err(CsError::TypeMismatched(id));
             }
         
@@ -65,7 +64,5 @@ pub fn tc_arglist(
             return Err(CsError::InvalidArguement(id));
         }
         return Ok(());
-    };            
-    
-    Ok(())
+    }          
 }

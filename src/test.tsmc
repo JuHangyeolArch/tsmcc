@@ -1,15 +1,21 @@
-int main(int c){
+int main(int c, int a){
 
     int **ab;
 	
     put(10);
 
-    if (0) {
+    if (1) {
        ;
     }
-
+    
     ab = (int**)c;
 
     return 0;
 }
 
+
+int shit() {
+    main(3,0);
+
+    return 0;
+}

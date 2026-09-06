@@ -127,7 +127,7 @@ impl AssemblyLine {
         };
 
         let instruction = match &self.instruction {
-            AssemblyInstruction::Data(val) => format!("{:X}", val),
+            AssemblyInstruction::Data(val) => format!("{:04X}", val),
             AssemblyInstruction::ORG(val) => {"ORG ".to_string() + &val.to_hex_uppercase()},
             AssemblyInstruction::END => "END".to_string() ,
             AssemblyInstruction::AND(val, indirect) => {"AND ".to_string() + &val.to_hex_uppercase() + if *indirect {&" I"} else {&""}},
@@ -253,7 +253,7 @@ impl U12 {
     }
 
     pub fn to_hex_uppercase(&self) -> String {
-        format!("{:X}", self.0)
+        format!("{:04X}", self.0)
     }
 }
 
