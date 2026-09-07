@@ -104,7 +104,7 @@ impl CompileSnapShot {
             cur_pos: match & cmp.phase {
                 Phase::Lexer(_) => None,
                 Phase::Parser(m) => match m.cur_nodeid {
-                    Some(id) => Some(id.to_usize),
+                    Some(id) => Some(id.to_usize()),
                     None => None
                 },
                 Phase::CsAnalyzer(_) => None,
