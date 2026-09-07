@@ -206,7 +206,7 @@ impl LabelResolver {
     // fuction return label
     pub fn res_func_ret(&self, entry: usize) ->  Option<(AssemblyLabel, u16)> {
 
-        let offset = (self.get_var_count(entry) + self.get_reg_count(entry))  as u16 + 1;
+        let offset = (self.get_var_count(entry) + self.get_reg_count(entry))  as u16;
         
         let first  = usize_to_alphanumeric(entry / 36)?;
 

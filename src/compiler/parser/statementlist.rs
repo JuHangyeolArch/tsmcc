@@ -33,7 +33,7 @@ pub fn handle_statementlist(
             token_list,
             |p, a, l| {
 
-                let start: usize = p.get_cur_start(a);
+                let mut start: usize = p.get_cur_start(a);
 
                 let kind = match l
                     .get(start)
@@ -43,7 +43,7 @@ pub fn handle_statementlist(
                         TokenType::Amper | TokenType::Star  => StatementKind::Expression,
                         TokenType::If => StatementKind::If,
                         TokenType::While => StatementKind::While,
-                        TokenType::LBrace => StatementKind::Compound,
+                        TokenType::LBrace => {start = start + 1; StatementKind::Compound},
                         TokenType::Return => StatementKind::Return,
                         TokenType::Semic => StatementKind::Empty,
                         TokenType::RBrace => {

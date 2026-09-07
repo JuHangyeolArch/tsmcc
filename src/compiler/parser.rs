@@ -45,7 +45,7 @@ pub mod return_immediate;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Parser {
-    cur_nodeid: Option<NodeID>,
+    pub cur_nodeid: Option<NodeID>,
     is_over: bool,
 }
 

@@ -73,6 +73,7 @@ pub struct CompileSnapShot {
     pub text:  String,
     pub token_list: TokenList,
     pub ast: Ast,
+    pub cur_pos: Option<usize>,
     pub func_table: FuncTable,
     pub iloc: IlocProgram,
     pub assembly: AssemblyProgram,
@@ -100,6 +101,20 @@ impl CompileSnapShot {
             text: cmp.text.clone(),
             token_list: cmp.token_list.clone(),
             ast: cmp.ast.clone(),
+            cur_pos: match & cmp.phase {
+                Phase::Lexer(_) => None,
+                Phase::Parser(m) => match m.cur_nodeid {
+                    Some(id) => Some(id.to_usize),
+                    None => None
+                },
+                Phase::CsAnalyzer(_) => None,
+                Phase::IrGenerator(_) => None,
+                Phase::CodeGenerator(_) => None,
+                Phase::Assembler(_) => None,
+                Phase::Finished => None,
+                Phase::Error(_) => None,
+            },
+
             func_table: cmp.func_table.clone(),
             iloc: cmp.iloc.clone(),
             assembly: cmp.assembly.clone(),

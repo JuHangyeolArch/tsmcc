@@ -128,7 +128,7 @@ impl AssemblyLine {
 
         let instruction = match &self.instruction {
             AssemblyInstruction::Data(val) => format!("{:04X}", val),
-            AssemblyInstruction::ORG(val) => {"ORG ".to_string() + &val.to_hex_uppercase()},
+            AssemblyInstruction::ORG(val) => {"ORG ".to_string() + &format!("{:03X}",val.value())},
             AssemblyInstruction::END => "END".to_string() ,
             AssemblyInstruction::AND(val, indirect) => {"AND ".to_string() + &val.to_hex_uppercase() + if *indirect {&" I"} else {&""}},
             AssemblyInstruction::ADD(val, indirect) => {"ADD ".to_string() + &val.to_hex_uppercase() + if *indirect {&" I"} else {&""}},

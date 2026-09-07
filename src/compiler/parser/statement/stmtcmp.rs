@@ -52,7 +52,7 @@ impl Parser {
                         AstNodeKind::StatementList,
                         start,
                         None
-                    );                    
+                    );
                     
                     Ok(())
                 },
