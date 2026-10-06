@@ -72,6 +72,8 @@ impl AssemblyProgram {
 }
 
 
+
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct AssemblyLine {
     label: Option<AssemblyLabel>,
@@ -165,6 +167,13 @@ impl AssemblyLine {
 
     
 }
+
+impl ProducedBy for AssemblyLine {
+    fn produced_by(&self) ->  Option<SpanInfo> {
+        Some(self.span.clone())
+    }
+}
+
 
 
 #[derive(Debug, Clone, PartialEq)]

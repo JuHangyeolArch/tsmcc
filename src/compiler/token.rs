@@ -27,8 +27,8 @@ impl TokenList {
         self.tokens.len()
     }
     
-    pub fn as_iter(&self) -> TokenIteration<'_> {
-        TokenIteration::new( self)
+    pub fn as_iter(&self) -> impl Iterator<Item = Token> {
+        self.tokens.clone().into_iter()
     }
 
     pub fn get(&self, token_pos: usize) -> Option<Token> {
@@ -138,10 +138,6 @@ Q: FnMut(&Token) -> bool,
         self.match_pair_in(range.clone(),car,cdr)
         
     }
-
-
-    
-
     
     pub fn split_by<P>(&self,
         range: Range<usize>,
@@ -173,34 +169,6 @@ I: SliceIndex<[Token]>
         &self.tokens[index]
     }
 
-}
-
-
-pub struct TokenIteration<'a> {
-    token_list: &'a TokenList,
-    pos: usize,
-}
-
-impl<'a> TokenIteration<'a> {
-
-    fn new(token_list: &'a TokenList) -> Self {
-        TokenIteration{
-            token_list: token_list,
-            pos: 0,
-        }
-    }
-}
-
-impl<'a> Iterator for TokenIteration<'a> {
-    type Item = Token;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        match self.token_list.get(self.pos) {
-            Some(token) => Some(token.clone()),
-            None => None,
-        }
-
-    }
 }
 
 #[derive(Debug, Clone, PartialEq)]

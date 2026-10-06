@@ -34,8 +34,16 @@ impl Ast {
         self.nodes.get_mut(id.to_usize())        
     }
 
-    pub fn get_root(& self) -> NodeID {
+    pub fn get_root(&self) -> NodeID {
         NodeID::new(0)
+    }
+
+    pub fn as_iter(&self) -> impl Iterator<Item = AstNode> {
+        self.nodes.clone().into_iter()
+    }
+
+    pub fn count(&self) -> usize {
+        self.nodes.len()
     }
     
 }

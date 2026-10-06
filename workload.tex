@@ -1,0 +1,254 @@
+% Created 2026-09-07 Mon 18:53
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={},
+ pdflang={English}}
+\begin{document}
+
+\tableofcontents
+
+\section{{\bfseries\sffamily DONE} 프로젝트 계획}
+\label{sec:org308dedb}
+
+\subsection{{\bfseries\sffamily DONE} 프로젝트 구조 만들기}
+\label{sec:org1a05a0e}
+
+\begin{enumerate}
+\item{$\boxtimes$} UI와 컴파일러 분리
+\item{$\boxtimes$} 컴파일러 모듈 나누기
+\item{$\boxtimes$} 렉서 모듈 나누기
+\item{$\boxtimes$} 파서 모듈 나누기
+\item{$\boxtimes$} AST 모듈 나누기
+\item{$\boxtimes$} 전체 구조 스케치
+\end{enumerate}
+\subsection{{\bfseries\sffamily DONE} 명세 점검}
+\label{sec:org6f78160}
+
+\begin{enumerate}
+\item{$\boxtimes$} 문법 점검
+\item{$\boxtimes$} I/O 빌트인 확인
+\end{enumerate}
+\section{{\bfseries\sffamily DONE} 코드 작성}
+\label{sec:orge0a400a}
+
+\subsection{{\bfseries\sffamily DONE} 멀티스레드 구조 작성}
+\label{sec:org96311e1}
+
+\begin{enumerate}
+\item{$\boxtimes$} 파일 이름 입력받기
+\item{$\boxtimes$} 파일 입력받기
+\item{$\boxtimes$} 쓰레드 나누기
+\item{$\boxtimes$} 컴파일러 동작, 상태 신호로 주고받기
+\end{enumerate}
+\subsection{{\bfseries\sffamily DONE} trimmer}
+\label{sec:org1173335}
+
+\begin{enumerate}
+\item{$\boxtimes$} 주석 전부삭제 -> 그냥 뒤에서 지우면 된다.
+\end{enumerate}
+\subsection{{\bfseries\sffamily DONE} 렉서 개발}
+\label{sec:orgd950f6d}
+
+\begin{enumerate}
+\item{$\boxtimes$} next에 대해서 구현
+\item{$\boxtimes$} next의 내부
+\item{$\boxtimes$} 토큰 종류 enum으로 정의
+\item{$\boxtimes$} 토큰에 대한 정의
+\item{$\boxtimes$} 문자열 토큰 패턴매칭
+\item{$\boxtimes$} 토큰이 str에 대한 참조를 포함하도록 하기
+\item{$\boxtimes$} 서브스트링 반환하는 토큰 메서드 구현 -> 모든 결과물이 공유하는 이전 단계에 대한(시작, 끝) 벡터 참조 구조체를 구현함
+\end{enumerate}
+\subsection{{\bfseries\sffamily DONE} 파서 개발}
+\label{sec:org739c8d6}
+
+\begin{enumerate}
+\item{$\boxtimes$} ast node 종류 정의
+\item{$\boxtimes$} struct node tree as vec
+\item{$\boxtimes$} parser match the syntax of the node and build it to the tree -> match in progres
+\begin{itemize}
+\item[{$\boxtimes$}] each child node is degree of progress -> no need to store in parser struct
+\item[{$\boxtimes$}] match node type in case of (none, none), (left, none), (left, right)->go to parent
+-기존 함수 너무 길음 = 다 뜯어 고치기 -> 함수별로 매치하고 내부에서 자식 상태 사용
+\begin{enumerate}
+\item{$\boxtimes$} Program,
+\item{$\boxtimes$} FunctionList,
+\item{$\boxtimes$} Function
+\item{$\boxtimes$} FunctionInterface,
+\item{$\boxtimes$} ParameterList,
+\item{$\boxtimes$} DeclarationList,
+\item{$\boxtimes$} Declaration,
+\item{$\boxtimes$} Declarator,
+\item{$\boxtimes$} ValueKind,
+\item{$\boxtimes$} StatementList,
+\item{$\boxtimes$} Statement(StatementKind),
+\begin{itemize}
+\item[{$\boxtimes$}] Expression
+\item[{$\boxtimes$}] If
+\item[{$\boxtimes$}] While -> If로 같이 처리 동일
+\item[{$\boxtimes$}] Compound
+\item[{$\boxtimes$}] Return,
+\item[{$\boxtimes$}] Empty
+\end{itemize}
+\item{$\boxtimes$} AssginExpr,
+\item{$\boxtimes$} CondtionExpr,
+\item{$\boxtimes$} AdditiveExpr(AdditiveOpKind),
+\begin{itemize}
+\item[{$\boxtimes$}] add
+\item[{$\boxtimes$}] sub
+\end{itemize}
+\item{$\boxtimes$} Term(MultiplicativeOpKind),
+\item{$\boxtimes$} UnaryExpr(UnaryOpKind),
+\item{$\boxtimes$} Factor(FactorKind),
+\item{$\boxtimes$} Identifier(String),
+\item{$\boxtimes$} Literal(i32),
+\end{enumerate}
+\end{itemize}
+\end{enumerate}
+\subsection{{\bfseries\sffamily DONE} 문맥민감분석기 개발}
+\label{sec:org70b025c}
+\begin{enumerate}
+\item 스코프 분석
+\begin{itemize}
+\item[{$\boxtimes$}] 함수마다 정보를 저장하는 레코드(선언정보, 변수) 작성
+\item[{$\boxtimes$}] 함수를 만나면 선언정보와 함께 벡터에 레코드 생성
+\item[{$\boxtimes$}] 파라미터 만나면 변수벡터에 저장하고 파라미터 개수 저장
+\item[{$\boxtimes$}] 변수를 만나면 이름, 타입 저장
+\item[{$\boxtimes$}] 함수호출시 벡터 조회, 없으면 에러
+\item[{$\boxtimes$}] 변수 사용시 벡터 조회, 없으면 에러
+\end{itemize}
+\item 타입 분석
+\begin{itemize}
+\item[{$\boxtimes$}] 저장해놓은 테이블 이용. 따라서 함수의 원형부분과 변수 선언은 보지 않음.
+\item[{$\boxtimes$}] 조건 연산자는 무조건 int형을 배출한다.
+\item[{$\boxtimes$}] 역참조 연산자는 참조깊이를 하나 줄이고, 참조연산자는 그 반대가 되어야한다.
+\item[{$\boxtimes$}] 좌항(LValue)와 우항(RValue)는 구분되어야한다.
+\item[{$\boxtimes$}] 사칙연산, 조건식, 대입식은 결과물로 RValue를 배출한다.
+\item[{$\boxtimes$}] 역참조 연산자는 결과물로 LValue를 배출한다. 소스는 메모리를 가리키(포인터)여야만한다.
+\item[{$\boxtimes$}] 참조연산자는 결과물로 항상 RValue를 배출한다. Lvalue를 소스로 받는다.
+\item[{$\boxtimes$}] Lvalue는 연산을 위해 평가될 때 항상 로드되어 Rvalue로 변환되어야한다.
+\item[{$\boxtimes$}] 변수와 사용되는 식의 타입은 같아야한다.
+\item[{$\boxtimes$}] 함수 호출식과 사용되는 식의 타입은 같아야한다.
+\item[{$\boxtimes$}] 함수정의부분의 매개변수와, 호출 인자의 개수, 타입이 같아야한다.
+\end{itemize}
+
+\item 흐름 분석
+\begin{itemize}
+\item[{$\boxtimes$}] 함수는 항상 리턴값을 만나야한다.
+\begin{itemize}
+\item[{$\boxtimes$}] 함수의 흐름을 흐름 그래프로 표현한다.
+\item[{$\boxtimes$}] 순차적으로 진행되는 코드는 노드이다.
+\item[{$\boxtimes$}] if, while 분기문은 에지이다.
+\item[{$\boxtimes$}] 흐름 그래프는 하나의 노드에서 출발하여 항상 하나의 노드에서 끝난다.
+\item[{$\boxtimes$}] 방문 한 적 있는 노드는 다시 셀 필요 없이 저장해놓은 결과를 가져온다.
+\item[{$\boxtimes$}] 한 번이라도 return을 만나면 그 흐름은 리턴값이 존재한다.
+\item[{$\boxtimes$}] 모든 흐름이 리턴값이 있지 않다면 에러
+\end{itemize}
+\end{itemize}
+\end{enumerate}
+\subsection{{\bfseries\sffamily DONE} IR 제네레이터개발}
+\label{sec:org61a5541}
+\begin{enumerate}
+\item I/O 빌트인 생각
+\begin{itemize}
+\item PUT, GET
+\item 거의 대부분 하드웨어 의존적임 -> 함수 시작을 제외하고 라벨화 해놓고 코드 제네레이터가 생성
+\end{itemize}
+\item 함수, 함수호출, 변수, 레지스터, 상수, 브랜치 메모리
+\begin{itemize}
+\item 함수 -> 시작, 프롤로그, 에필로그만 라벨로 명시해놓는다.
+\item 함수호출 -> 파라미터 올리기, 함수 호출과 반환된 데이터가 저장될 레지스터만 명시한다.
+\item 변수는 항상 스택 메모리에 저장된다. -> 하드웨어 의존적이므로 함수마다 할당하여 라벨화
+\item 파라미터와 변수 구분한다.
+\item 레지스터 -> 일단 무제한 할당한다. 오직 우항이 저장된 레지스터가 좌항보다 1을 초과하여 클때만 그 사이의 레지스터로 최적화.
+\item 상수 -> 함수마다 할당. immediate load 명령어 사용한다.
+\item 브랜치 -> 함수마다 무제한 할당.
+\item 리턴 -> 리턴값 어딘가에 저장한다고 라벨 해놓고, 에필로그로 브랜치
+\end{itemize}
+\item 명령어 셋
+\begin{itemize}
+\item 사칙연산 (add,sub,mul,div) 사용한다. immediate사용 x
+\item store, load, loadi 사용한다.
+\item cmpeq(동일한지 비교), cbr(조건브랜치) 사용한다.
+\item jumpi 사용한다.
+\end{itemize}
+\end{enumerate}
+\subsection{{\bfseries\sffamily DONE} 코드 제네레이터개발}
+\label{sec:org84909c0}
+\begin{enumerate}
+\item 내장 서브루틴
+\begin{itemize}
+\item 곱셈 -> 시프트로 구현
+\item 나눗셈 -> 마찬가지로 시프트로 구현
+\item 인터럽트 서브루틴
+\item Cmpeq 연산 -> 두 수가 같으면 1 다르면 0
+\end{itemize}
+\item 빌트인 함수 변환
+\begin{itemize}
+\item 함수 프롤로그 에필로그 제외 그냥 다 하드코딩해서 붙인다.
+\end{itemize}
+\item 함수 호출, 반환
+\begin{itemize}
+\item 스택포인터를 직접 만들어야한다.
+\item 스택 포인터값 불러와서 오프셋 더하면 스택메모리에 접근한다.
+\item 파라미터가 가장 먼저 올라간다.
+\begin{itemize}
+\item 파라미터 올릴 때, SP가 달라지므로 올리기전에 임시로 저장해놓고, 올리기
+\end{itemize}
+\item 변수가 그다음 올라간다.
+\item 스필아웃된 레지스터가 그다음 올라간다.
+\item 파라미터 올리고 내리는건 caller에서, 나머지는 callee에서 한다.
+\item 함수로 갈때, 리턴메모리를 저장해야한다.
+\begin{itemize}
+\item 마노 컴퓨터는 PC를 저장하는 방법이 BSA말고 없다. -> 브랜치하고 다음 줄을 실행 = 다음줄이 무조건 명령어
+\item 대상함수로 가는 BUN명령어를 데이터취급하여 라벨 붙인다.
+\item 파라미터 다 올리고 BUN명령어를 복사해서 스택에 올린다.
+\item 그 위로 스택 한 칸 더 올리고 BSA한다.
+\end{itemize}
+\item 변수, 레지스터와 파라미터 오프셋은 바로 이어지는 것이 아닌 2칸 이격이 있다. + 2
+\end{itemize}
+
+\item 브랜치, 파라미터, 상수, 변수, 레지스터
+\begin{itemize}
+\item 브랜치, 파라미터, 변수 라벨 할당기를 만들어서 각각 라벨을 붙인다. 각 데이터 안에는 오프셋 저장
+\item 마노 컴퓨터는 어차피 범용레지스터 없어서 그냥 다 스택으로 스필아웃한다. -> 라벨화
+\item 상수도 라벨 붙인다.
+\end{itemize}
+\item 함수와 데이터
+\begin{itemize}
+\item 공용데이터는 내장 서브루틴 바로 아래
+\item 함수 관련 데이터는 함수에 묶는다.
+\end{itemize}
+\item 나머지 연산
+-그냥 대응되는 연산으로 변환
+\end{enumerate}
+\subsection{{\bfseries\sffamily DONE} 어셈블러 개발}
+\label{sec:org82e0c47}
+
+\subsection{{\bfseries\sffamily DONE} 하나로 합치기}
+\label{sec:org87a0568}
+\section{{\bfseries\sffamily DONE} 테스트}
+\label{sec:org03b9ed2}
+
+
+\section{{\bfseries\sffamily TODO} GUI 붙이기}
+\label{sec:orga1c5b80}
+\end{document}

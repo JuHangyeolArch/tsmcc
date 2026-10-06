@@ -42,6 +42,8 @@ impl AsmTable {
         val: AssemblyValue,
     ) -> u16 {
 
+        println!("{:?}",val);
+        
         match val {
             
             AssemblyValue::Label(label) => {self.get(label).unwrap().value()},

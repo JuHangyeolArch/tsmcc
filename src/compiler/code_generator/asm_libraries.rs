@@ -201,7 +201,7 @@ pub fn asm_cond(asm_prog: &mut AssemblyProgram) {
     asm_prog.add_line(Some(AssemblyLabel('C','O','N')), AssemblyInstruction::Data(0x000), None);    
 
     asm_prog.add_line(None, AssemblyInstruction::SZA, None);
-    asm_prog.add_line(None, AssemblyInstruction::BUN(AssemblyValue::Label(AssemblyLabel('N','Z','R')) , false), None);
+    asm_prog.add_line(None, AssemblyInstruction::BUN(AssemblyValue::Label(AssemblyLabel('N','Z','O')) , false), None);
     asm_prog.add_line(None, AssemblyInstruction::LDA(AssemblyValue::Label(AssemblyLabel('O','N','E')) , false), None);
     asm_prog.add_line(None, AssemblyInstruction::BUN(AssemblyValue::Label(AssemblyLabel('C','O','D')) , false), None);
 

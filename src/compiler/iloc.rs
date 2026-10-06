@@ -27,6 +27,19 @@ impl IlocProgram {
         self.functions.push(IlocFunction::new(name, entry, param_size, local_size))
     }
 
+
+    pub fn get_by_global(&self, pos: usize) -> Option<IlocLine> {
+        if let Some((entry,line)) = self.find_by_global_pos(pos) {
+            Some(self.get_bypos(entry)
+                .unwrap()
+                .get_line(line)
+                .unwrap()
+                .clone())
+        } else {
+            None
+        }
+    }
+    
     pub fn get_global_pos(&self, func: usize, line: usize) -> Option<usize> {
         let mut result: usize = 0;
         
@@ -63,7 +76,14 @@ impl IlocProgram {
         self.functions.get(pos)
     }
 
+    pub fn as_iter(&self) -> impl Iterator<Item = IlocLine> {
+        let mut combined: Box<dyn Iterator<Item = IlocLine>> = Box::new(std::iter::empty());
 
+        for f in self.functions.iter() {
+            combined = Box::new(combined.chain(f.lines.clone().into_iter()));
+        }
+        combined
+    }
     
 }
 
@@ -189,6 +209,13 @@ impl IlocLine {
 
 
 }
+
+impl ProducedBy for IlocLine {
+    fn produced_by(&self) ->  Option<SpanInfo> {
+        Some(self.span.clone())
+    }
+}
+
 
 
 #[derive(Debug, Clone, PartialEq)]
