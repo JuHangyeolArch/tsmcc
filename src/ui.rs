@@ -758,21 +758,29 @@ int foo(int c, int a){
         egui::ScrollArea::both()
             .scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysVisible)
             .show(ui, |ui| {
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-01.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-02.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-03.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-04.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-05.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-06.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-07.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-08.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-09.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-10.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-11.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-12.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-13.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-14.png")));
-                ui.add(egui::Image::new(egui::include_image!("../assets/output-15.png")));
+
+                let width = ui.available_width() - 20.0;
+                let original_width = 1920.0;
+                let original_height = 1080.0;
+                let target_height = width * (original_height / original_width);
+
+                let exact_size = egui::vec2(width, target_height);
+                
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-01.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-02.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-03.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-04.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-05.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-06.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-07.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-08.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-09.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-10.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-11.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-12.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-13.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-14.png")).fit_to_exact_size(exact_size));
+                ui.add(egui::Image::new(egui::include_image!("../assets/output-15.png")).fit_to_exact_size(exact_size));
                 
             });
 
