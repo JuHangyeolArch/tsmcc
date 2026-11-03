@@ -61,6 +61,7 @@ impl CodeGenerator {
             asm_program.add_line(None, AssemblyInstruction::ORG(U12::new(0x100)), None);        
             self.resolver.init_resolver(ir_program);
             self.is_inited = true;
+            return Some(Ok(()))
         }
         
         if !self.is_over {
@@ -69,7 +70,19 @@ impl CodeGenerator {
             } else {
                 return Some(Ok(()))
             }
-        }        
+        }
+
+        // println!("{:#?}",asm_program.get_mut_line(1).unwrap());
+        // println!("{:#?}",self.resolver.res_funcbun_ret(ir_program.count_func() -1).unwrap());
+        
+        // panic!();
+        
+        asm_program.get_mut_line(1).unwrap().set(Some(AssemblyLabel('Z','R','O')),
+            idiom::bun(
+                self.resolver.res_function(ir_program.count_func() - 1).unwrap(),
+            )
+            ,None);
+        
         
         None
     }
