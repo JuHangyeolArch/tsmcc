@@ -27,6 +27,11 @@ impl IlocProgram {
         self.functions.push(IlocFunction::new(name, entry, param_size, local_size))
     }
 
+    pub fn count_func(&self) -> usize{
+        self.functions.len()
+    }
+
+    
 
     pub fn get_by_global(&self, pos: usize) -> Option<IlocLine> {
         if let Some((entry,line)) = self.find_by_global_pos(pos) {

@@ -82,6 +82,7 @@ pub fn show_span(
                         .unwrap();
                     (span.get_start(), span.get_end())          
                 },
+                SnapShotPhase::Parser => (Some(target), Some(target + 1)),
                 _ => (None,None),
             }
         },
@@ -126,6 +127,7 @@ pub fn show_span(
                         .unwrap();
                     (span.get_start(), span.get_end())
                 },
+                SnapShotPhase::IrGenerator => (Some(target), Some(target + 1)),
                 _ => (None,None),
             }
         },
@@ -161,7 +163,6 @@ pub fn show_span(
                             }
                         }                          
                     }
-                    
                     (first,last)
                 },
 
@@ -206,6 +207,7 @@ pub fn show_span(
                         .unwrap();
                     (span.get_start(), span.get_end())
                 },
+                SnapShotPhase::CodeGenerator => (Some(target), Some(target + 1)),
                 _ => (None,None),
             }
 
@@ -316,6 +318,7 @@ pub fn show_span(
                         .unwrap();
                     (span.get_start(), span.get_end())
                 },
+                SnapShotPhase::Assembler => (Some(target), Some(target + 1)),
                 _ => (None,None),
             }
 
@@ -459,8 +462,9 @@ pub fn show_span(
                     (span.get_start(), span.get_end())
                 },
 
-                
+                SnapShotPhase::Finished => (Some(target), Some(target + 1)),
                 _ => (None,None),
+
             }
 
         },        

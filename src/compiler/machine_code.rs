@@ -38,6 +38,25 @@ impl MachineProgram{
         self.lines.clone().into_iter()
     }
 
+    pub fn by_16word(&self) -> String {
+
+        let mut text = "".to_string();
+        
+        for (i,word) in self.as_iter().enumerate() {
+            
+            if (i % 16 == 0) {
+                text.push_str("\n");
+                text.push_str(&format!("{:03x}: ", i));                
+            }
+
+            text.push_str(&word.to_string());
+            text.push_str(" ");
+        }
+
+        text
+        
+    }
+
 }
 
 #[derive(Debug, Clone, PartialEq)]

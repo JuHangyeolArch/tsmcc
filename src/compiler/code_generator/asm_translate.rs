@@ -28,7 +28,7 @@ use crate::compiler::code_generator::{
 };
 
 mod ir_label;
-mod idiom;
+pub mod idiom;
 mod func_data;
 mod arithmetic;
 mod memory;

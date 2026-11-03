@@ -130,7 +130,7 @@ impl LexicalAnalyzer {
                         )},
                     "==" => {
                         Token::new(
-                            TokenType::Comma,
+                            TokenType::Equal,
                             start_pos,
                             self.text_pos,
                         )},

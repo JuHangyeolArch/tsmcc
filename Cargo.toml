@@ -4,9 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-egui = "0.36"
-eframe = { version = "0.36.0", features = ["persistence"] }
-
-serde = { version = "1.0.219", features = ["derive"] }
-
+egui = "0.37"
+eframe = { version = "0.37.0"}
+egui_tiles = "0.18"
 rfd = "0.17"
+egui_extras = { version = "0.37", features = ["image"] }
+
+

@@ -43,10 +43,17 @@ impl AssemblyProgram {
         }
     }
     
+
     pub fn get_line(&self, pos: usize) -> Option<&AssemblyLine>{
         self.lines.get(pos)
     }
 
+
+    pub fn get_mut_line(&mut self, pos: usize) -> Option<&mut AssemblyLine>{
+        self.lines.get_mut(pos)
+    }
+
+    
     pub fn count_line(&self) -> usize {
         self.lines.len()
     }
@@ -107,6 +114,30 @@ impl AssemblyLine {
 
     }
 
+    pub fn set(
+        &mut self,
+        label: Option<AssemblyLabel>,
+        instruction: AssemblyInstruction,
+        origin: Option<usize>
+    ) {
+
+        let end = if let Some(pos) = origin {
+            Some(pos + 1)
+        }else {
+            None
+        };
+
+        self.label = label;
+        self.instruction = instruction;
+        self.span = SpanInfo::new(
+                super::SnapShotPhase::CodeGenerator,
+                origin,
+                end
+        );
+        
+    }
+
+    
     pub fn add_label(&mut self, label: AssemblyLabel) {
         self.label = Some(label);
     }

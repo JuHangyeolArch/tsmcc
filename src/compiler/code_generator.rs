@@ -20,6 +20,9 @@ use crate::compiler::assembly::{
     AssemblyValue,
 };
 
+use asm_translate::idiom;
+
+
 mod asm_libraries;
 mod asm_translate;
 
@@ -66,9 +69,7 @@ impl CodeGenerator {
             } else {
                 return Some(Ok(()))
             }
-
-        }
-        
+        }        
         
         None
     }
