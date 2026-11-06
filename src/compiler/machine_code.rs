@@ -41,15 +41,26 @@ impl MachineProgram{
     pub fn by_16word(&self) -> String {
 
         let mut text = "".to_string();
-        
-        for (i,word) in self.as_iter().enumerate() {
-            
-            if (i % 16 == 0) {
-                text.push_str("\n");
-                text.push_str(&format!("{:03x}: ", i));                
-            }
+        let mut i: u16 = 0;
 
-            text.push_str(&word.to_string());
+        text.push_str(&format!("{:03x}: ", i));
+        
+        for word in self.as_iter() {
+            
+            while i < word.address.value() {                    
+                i += 1;
+                if i % 16 == 0 {
+                    text.push_str("\n");
+                    text.push_str(&format!("{:03x}: ", i));
+                }
+                if i < word.address.value() {
+                    text.push_str("0000");
+                    text.push_str(" ");    
+                }
+
+            }
+            
+            text.push_str(&format!("{:04x}",&word.value));
             text.push_str(" ");
         }
 

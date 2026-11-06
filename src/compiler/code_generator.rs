@@ -71,11 +71,6 @@ impl CodeGenerator {
                 return Some(Ok(()))
             }
         }
-
-        // println!("{:#?}",asm_program.get_mut_line(1).unwrap());
-        // println!("{:#?}",self.resolver.res_funcbun_ret(ir_program.count_func() -1).unwrap());
-        
-        // panic!();
         
         asm_program.get_mut_line(1).unwrap().set(Some(AssemblyLabel('Z','R','O')),
             idiom::bun(

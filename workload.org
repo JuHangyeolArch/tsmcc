@@ -169,7 +169,7 @@
 * DONE 테스트
 
 
-* TODO GUI 붙이기
+* DONE GUI 붙이기
 
 
 
